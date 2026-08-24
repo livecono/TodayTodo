@@ -2714,7 +2714,7 @@
       header > .header-right > .weather-info { grid-column: 1 / -1; min-height: 32px; }
       header > .header-right > .btn-game,
       header > .header-right > .settings-button { grid-column: auto; min-width: 0; min-height: 32px; padding: 5px 4px; font-size: 0.68rem; }
-      header > .header-right > .pet-container { grid-column: 1 / -1; grid-row: auto; justify-self: center; width: min(100%, 220px); min-width: 0; height: auto; }
+      header > .header-right > .pet-container { grid-column: 1 / -1; grid-row: auto; justify-self: stretch; width: 100%; min-width: 0; max-width: none; height: auto; }
       header > .header-right > .kpi-container { grid-column: 1 / -1; grid-row: auto; width: 100%; }
       header > .timer-tools-column { order: 1; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; }
       header > .header-right { order: 2; }
@@ -3074,7 +3074,7 @@
         <h3 class="settings-section-title">앱 업데이트</h3>
         <div class="setting-row app-update-row">
           <div><div class="setting-label">현재 버전 v4.2.0</div><div class="setting-description">새 APK가 배포되면 확인 후 앱 안에서 다운로드할 수 있습니다.</div></div>
-          <div class="app-update-action"><span class="app-update-status" id="app-update-status" role="status" aria-live="polite"></span><button class="app-update-button" id="btn-check-update" type="button">업데이트 확인</button></div>
+          <div class="app-update-action"><span class="app-update-status" id="app-update-status" role="status" aria-live="polite"></span><button class="app-update-button" id="btn-check-update" type="button">업데이트 다운로드</button></div>
         </div>
       </div>
       <div class="settings-footer">
@@ -3594,8 +3594,7 @@
     const dictionaryHistory = document.getElementById('dictionary-history');
     const btnCheckUpdate = document.getElementById('btn-check-update');
     const appUpdateStatus = document.getElementById('app-update-status');
-    const APP_VERSION = '4.2.0';
-    const UPDATE_MANIFEST_URL = 'https://raw.githubusercontent.com/livecono/TodayTodo/main/updates/latest.json';
+    const APK_DOWNLOAD_URL = 'https://raw.githubusercontent.com/livecono/TodayTodo/main/updates/today-todo-4.2.0.apk';
 
     const todoDraftStorageKey = 'today_todo_draft_v1';
     function saveTodoDraft() {
@@ -3871,43 +3870,17 @@
       applySettings();
     });
 
-    function isNewerVersion(remoteVersion, currentVersion) {
-      const remote = String(remoteVersion).split('.').map(Number);
-      const current = String(currentVersion).split('.').map(Number);
-      for (let index = 0; index < 3; index += 1) {
-        if ((remote[index] || 0) !== (current[index] || 0)) return (remote[index] || 0) > (current[index] || 0);
-      }
-      return false;
-    }
-
     btnCheckUpdate.addEventListener('click', async () => {
-      if (UPDATE_MANIFEST_URL.includes('YOUR-DOMAIN')) {
-        appUpdateStatus.innerText = '배포 주소를 설정해야 합니다.';
+      const updatePlugin = window.Capacitor?.Plugins?.Update;
+      if (!updatePlugin) {
+        appUpdateStatus.innerText = 'APK 다운로드 주소로 이동합니다.';
+        window.location.assign(APK_DOWNLOAD_URL);
         return;
       }
       btnCheckUpdate.disabled = true;
-      appUpdateStatus.innerText = '업데이트 확인 중...';
+      appUpdateStatus.innerText = 'APK 다운로드 중...';
       try {
-        const response = await fetch(`${UPDATE_MANIFEST_URL}?t=${Date.now()}`, { cache: 'no-store' });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const manifest = await response.json();
-        if (!manifest.version || !manifest.apkUrl || !/^https:\/\//i.test(manifest.apkUrl)) throw new Error('안전하지 않은 APK 주소입니다.');
-        if (!isNewerVersion(manifest.version, APP_VERSION)) {
-          appUpdateStatus.innerText = '최신 버전입니다.';
-          return;
-        }
-        const updatePlugin = window.Capacitor?.Plugins?.Update;
-        if (!updatePlugin) {
-          appUpdateStatus.innerText = `v${manifest.version}이 있습니다. Android 앱에서 다운로드하세요.`;
-          return;
-        }
-        const shouldInstall = window.confirm(`새 버전 v${manifest.version}을 다운로드할까요?`);
-        if (!shouldInstall) {
-          appUpdateStatus.innerText = '업데이트를 취소했습니다.';
-          return;
-        }
-        appUpdateStatus.innerText = 'APK 다운로드 중...';
-        await updatePlugin.downloadAndInstall({ apkUrl: manifest.apkUrl });
+        await updatePlugin.downloadAndInstall({ apkUrl: APK_DOWNLOAD_URL });
         appUpdateStatus.innerText = '설치 화면을 열었습니다.';
       } catch (error) {
         appUpdateStatus.innerText = '업데이트를 확인할 수 없습니다.';
