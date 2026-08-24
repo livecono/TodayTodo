@@ -1,0 +1,19 @@
+node_modules/
+
+# Capacitor generated web assets
+android/app/src/main/assets/public/
+android/app/src/main/assets/capacitor.config.json
+android/app/src/main/assets/capacitor.plugins.json
+
+# Local Android and build files
+android/local.properties
+android/.gradle/
+android/**/build/
+*.apk
+*.aab
+*.jks
+*.keystore
+
+# Local editor files
+.idea/
+*.iml
