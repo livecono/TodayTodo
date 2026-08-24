@@ -233,6 +233,26 @@
     .theme-options { display: grid; grid-template-columns: repeat(auto-fill, minmax(82px, 1fr)); gap: 5px; margin-top: 8px; }
     .theme-option { min-width: 0; padding: 6px 4px; border: 1px solid var(--border-color); border-radius: 7px; background: var(--surface); color: var(--text-main); font: inherit; font-size: 0.69rem; font-weight: 800; line-height: 1.2; cursor: pointer; }
     .theme-option:hover, .theme-option.active { border-color: var(--primary); background: color-mix(in srgb, var(--primary) 16%, var(--surface)); }
+    .custom-theme-option-wrap { display: flex; min-width: 0; gap: 4px; }
+    .custom-theme-option-wrap .theme-option { flex: 1; }
+    .custom-theme-delete { flex: 0 0 auto; padding: 4px 6px; border: 1px solid var(--border-color); border-radius: 7px; background: var(--surface); color: var(--text-muted); font: inherit; font-size: 0.72rem; cursor: pointer; }
+    .custom-theme-delete:hover { border-color: #c75c5c; background: #fbe8e8; color: #a33f3f; }
+    .custom-theme-form { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 8px; align-items: end; margin-top: 10px; }
+    .custom-theme-field { display: grid; gap: 4px; color: var(--text-muted); font-size: 0.72rem; font-weight: 800; }
+    .custom-theme-field input[type="text"] { min-width: 0; width: 100%; padding: 7px 8px; border: 1px solid var(--border-color); border-radius: 7px; background: var(--surface); color: var(--text-main); font: inherit; }
+    .custom-theme-field input[type="color"] { width: 42px; height: 34px; padding: 2px; border: 1px solid var(--border-color); border-radius: 7px; background: var(--surface); cursor: pointer; }
+    .custom-theme-field input[type="file"] { width: 100%; min-width: 0; padding: 6px; border: 1px solid var(--border-color); border-radius: 7px; background: var(--surface); color: var(--text-main); font: inherit; font-size: 0.7rem; }
+    .custom-theme-emojis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; grid-column: 1 / -1; }
+    .custom-theme-emojis input { min-width: 0; width: 100%; padding: 7px 8px; border: 1px solid var(--border-color); border-radius: 7px; background: var(--surface); color: var(--text-main); font: inherit; font-size: 1.05rem; text-align: center; }
+    .custom-theme-image-status { grid-column: 1 / -1; min-height: 16px; color: var(--text-muted); font-size: 0.7rem; }
+    .custom-theme-save { min-height: 34px; padding: 7px 10px; border: 0; border-radius: 7px; background: var(--primary); color: #fff; font: inherit; font-size: 0.75rem; font-weight: 800; cursor: pointer; }
+    .custom-theme-save:hover { background: var(--primary-hover); }
+    .app-update-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .app-update-action { display: flex; align-items: center; gap: 8px; }
+    .app-update-button { flex: 0 0 auto; padding: 7px 10px; border: 0; border-radius: 7px; background: var(--primary); color: #fff; font: inherit; font-size: 0.75rem; font-weight: 800; cursor: pointer; }
+    .app-update-button:disabled { opacity: 0.55; cursor: wait; }
+    .app-update-status { color: var(--text-muted); font-size: 0.72rem; text-align: right; }
+    @media (max-width: 420px) { .custom-theme-form { grid-template-columns: minmax(0, 1fr) auto; } .custom-theme-field:first-child { grid-column: 1 / -1; } .custom-theme-save { width: 100%; } }
 
     .theme-floating-effects { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 2; }
     .theme-floating-emoji { position: absolute; top: 105%; opacity: 0; font-size: clamp(1.45rem, 3.3vw, 2.45rem); filter: drop-shadow(0 4px 5px rgba(35, 50, 55, 0.22)); animation: theme-emoji-float var(--theme-duration) linear var(--theme-delay) infinite; }
@@ -1286,8 +1306,10 @@
     @media (max-width: 900px) {
       .main-grid { grid-template-columns: 1fr; }
       header { flex-direction: column; gap: 16px; align-items: flex-start; }
-      .header-right { width: 100%; justify-content: space-between; flex-wrap: wrap; }
-    }
+        height: 100dvh;
+        min-height: 100dvh;
+        max-height: 100dvh;
+        overflow: hidden;
 
     @media (max-width: 600px), (max-aspect-ratio: 1 / 1) {
       .brightness-control { flex: 1 1 150px; }
@@ -2681,6 +2703,33 @@
       .dictionary-search { gap: 6px; }
       .dictionary-search button { padding: 0 12px; }
     }
+
+    @media (max-width: 600px), (max-aspect-ratio: 1 / 1) {
+      html, body { width: 100%; height: 100dvh; min-height: 0; max-height: 100dvh; overflow: hidden; }
+      body { padding: 8px 6px; }
+      .app-container { height: 100%; min-height: 0; gap: 8px; overflow: hidden; }
+      header { flex: 0 0 auto; height: auto; max-height: none; overflow: visible; padding: 10px; gap: 8px; }
+      header > .header-right { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; width: 100%; }
+      header > .header-right > .brightness-control,
+      header > .header-right > .weather-info { grid-column: 1 / -1; min-height: 32px; }
+      header > .header-right > .btn-game,
+      header > .header-right > .settings-button { grid-column: auto; min-width: 0; min-height: 32px; padding: 5px 4px; font-size: 0.68rem; }
+      header > .header-right > .pet-container { grid-column: 1 / -1; grid-row: auto; justify-self: center; width: min(100%, 220px); min-width: 0; height: auto; }
+      header > .header-right > .kpi-container { grid-column: 1 / -1; grid-row: auto; width: 100%; }
+      header > .timer-tools-column { order: 1; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; }
+      header > .header-right { order: 2; }
+      header > .timer-tools-column > .timer-toggle-button { min-width: 0; min-height: 32px; padding: 5px 4px; font-size: 0.68rem; }
+      header > .timer-tools-column > .timer-panel,
+      header > .timer-tools-column > .stopwatch-panel { grid-column: 1 / -1; max-height: 35dvh; overflow-y: auto; }
+      .main-grid { flex: 1 1 auto; min-height: 0; gap: 8px; overflow: hidden; }
+      .main-grid > section:first-child { min-height: 0; overflow: hidden; }
+      #timeline-panel { height: auto; min-height: 0; flex: 1 1 auto; overflow: hidden; }
+      #timeline-panel .timeline { overflow-y: auto; }
+    }
+
+    @media (max-width: 420px) {
+      header > .timer-tools-column { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
   </style>
 </head>
 <body class="weather-sunny">
@@ -2953,6 +3002,19 @@
         <div class="setting-row theme-setting-row">
           <div><div class="setting-label">앱 테마</div><div class="setting-description">기본 테마와 해금한 펫의 테마 중에서 선택합니다.</div></div>
           <div class="theme-options" id="theme-options"></div>
+          <form class="custom-theme-form" id="custom-theme-form">
+            <label class="custom-theme-field">테마 이름<input id="custom-theme-name" type="text" maxlength="16" placeholder="내 테마" /></label>
+            <label class="custom-theme-field">배경색<input id="custom-theme-background" type="color" value="#dcefe9" /></label>
+            <label class="custom-theme-field">강조색<input id="custom-theme-primary" type="color" value="#4c8b81" /></label>
+            <label class="custom-theme-field">배경 화면<input id="custom-theme-image" type="file" accept="image/*" /></label>
+            <div class="custom-theme-emojis" aria-label="떠다니는 이모티콘 최대 3개">
+              <input id="custom-theme-emoji-1" type="text" maxlength="4" placeholder="🌿" aria-label="떠다니는 이모티콘 1" />
+              <input id="custom-theme-emoji-2" type="text" maxlength="4" placeholder="✨" aria-label="떠다니는 이모티콘 2" />
+              <input id="custom-theme-emoji-3" type="text" maxlength="4" placeholder="☁️" aria-label="떠다니는 이모티콘 3" />
+            </div>
+            <div class="custom-theme-image-status" id="custom-theme-image-status">배경 화면은 선택 사항입니다. 이미지가 있으면 색상보다 먼저 표시됩니다.</div>
+            <button class="custom-theme-save" type="submit">테마 만들기</button>
+          </form>
         </div>
         <div class="setting-row setting-range-row">
           <div><div class="setting-label">카드 투명도</div><div class="setting-description">카드 배경만 투명하게 조절합니다. 테마를 바꿔도 같은 값이 유지됩니다.</div></div>
@@ -3006,6 +3068,13 @@
         <div class="setting-row">
           <div><div class="setting-label">자동 날씨 업데이트</div><div class="setting-description">앱을 열 때 위치 기반 현재 날씨를 불러옵니다.</div></div>
           <label class="setting-switch"><input type="checkbox" data-setting="autoWeather"><span class="setting-slider"></span></label>
+        </div>
+      </div>
+      <div class="settings-section">
+        <h3 class="settings-section-title">앱 업데이트</h3>
+        <div class="setting-row app-update-row">
+          <div><div class="setting-label">현재 버전 v4.2.0</div><div class="setting-description">새 APK가 배포되면 확인 후 앱 안에서 다운로드할 수 있습니다.</div></div>
+          <div class="app-update-action"><span class="app-update-status" id="app-update-status" role="status" aria-live="polite"></span><button class="app-update-button" id="btn-check-update" type="button">업데이트 확인</button></div>
         </div>
       </div>
       <div class="settings-footer">
@@ -3498,6 +3567,13 @@
     const cardTransparencyValue = document.getElementById('card-transparency-value');
     const settingInputs = document.querySelectorAll('[data-setting]');
     const themeOptions = document.getElementById('theme-options');
+    const customThemeForm = document.getElementById('custom-theme-form');
+    const customThemeName = document.getElementById('custom-theme-name');
+    const customThemeBackground = document.getElementById('custom-theme-background');
+    const customThemePrimary = document.getElementById('custom-theme-primary');
+    const customThemeImage = document.getElementById('custom-theme-image');
+    const customThemeImageStatus = document.getElementById('custom-theme-image-status');
+    const customThemeEmojiInputs = [1, 2, 3].map(index => document.getElementById(`custom-theme-emoji-${index}`));
     const themeFloatingEffects = document.getElementById('theme-floating-effects');
     const soundModal = document.getElementById('sound-modal');
     const btnOpenSounds = document.getElementById('btn-open-sounds');
@@ -3516,6 +3592,10 @@
     const dictionaryStatus = document.getElementById('dictionary-status');
     const dictionaryResult = document.getElementById('dictionary-result');
     const dictionaryHistory = document.getElementById('dictionary-history');
+    const btnCheckUpdate = document.getElementById('btn-check-update');
+    const appUpdateStatus = document.getElementById('app-update-status');
+    const APP_VERSION = '4.2.0';
+    const UPDATE_MANIFEST_URL = 'https://raw.githubusercontent.com/livecono/TodayTodo/main/updates/latest.json';
 
     const todoDraftStorageKey = 'today_todo_draft_v1';
     function saveTodoDraft() {
@@ -3596,6 +3676,12 @@
       { key: 'pet-dragon', label: '드래곤', emoji: '🐲', petKey: 'egg', hatchLevel: 10 }
     ];
     let selectedTheme = localStorage.getItem('today_todo_selected_theme') || 'none';
+    let customTheme = loadStoredJson('today_todo_custom_theme_v1', null, value =>
+      value && typeof value.name === 'string' && value.name.length <= 16
+      && /^#[0-9a-f]{6}$/i.test(value.background) && /^#[0-9a-f]{6}$/i.test(value.primary)
+      && (!value.backgroundImage || /^data:image\/(jpeg|webp|png);base64,/.test(value.backgroundImage))
+      && (!value.emojis || Array.isArray(value.emojis))
+    );
     const storedCardTransparencyValue = localStorage.getItem('today_todo_card_transparency');
     const storedCardTransparency = Number(storedCardTransparencyValue);
     let cardTransparency = Number.isFinite(storedCardTransparency)
@@ -3622,7 +3708,7 @@
 
     function renderThemeOptions() {
       const availableThemes = themeDefinitions.filter(isThemeUnlocked);
-      if (!availableThemes.some(theme => theme.key === selectedTheme)) selectedTheme = 'none';
+      if (!availableThemes.some(theme => theme.key === selectedTheme) && !(selectedTheme === 'custom' && customTheme)) selectedTheme = 'none';
       themeOptions.innerHTML = '';
       availableThemes.forEach(theme => {
         const button = document.createElement('button');
@@ -3638,6 +3724,37 @@
         });
         themeOptions.appendChild(button);
       });
+      if (customTheme) {
+        const optionWrap = document.createElement('div');
+        optionWrap.className = 'custom-theme-option-wrap';
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = `theme-option${selectedTheme === 'custom' ? ' active' : ''}`;
+        button.dataset.theme = 'custom';
+        button.innerText = `🎨 ${customTheme.name}`;
+        button.addEventListener('click', () => {
+          selectedTheme = 'custom';
+          localStorage.setItem('today_todo_selected_theme', selectedTheme);
+          renderThemeOptions();
+          applySelectedTheme();
+        });
+        const deleteButton = document.createElement('button');
+        deleteButton.type = 'button';
+        deleteButton.className = 'custom-theme-delete';
+        deleteButton.innerText = '삭제';
+        deleteButton.setAttribute('aria-label', `${customTheme.name} 테마 삭제`);
+        deleteButton.addEventListener('click', () => {
+          if (appSettings.confirmDelete && !window.confirm('사용자 테마를 삭제할까요?')) return;
+          customTheme = null;
+          localStorage.removeItem('today_todo_custom_theme_v1');
+          if (selectedTheme === 'custom') selectedTheme = 'none';
+          localStorage.setItem('today_todo_selected_theme', selectedTheme);
+          renderThemeOptions();
+          applySelectedTheme();
+        });
+        optionWrap.append(button, deleteButton);
+        themeOptions.appendChild(optionWrap);
+      }
       localStorage.setItem('today_todo_selected_theme', selectedTheme);
     }
 
@@ -3645,6 +3762,8 @@
       weatherPhotoRequestId += 1;
       document.body.classList.remove(...weatherThemeClasses);
       themeDefinitions.forEach(theme => document.body.classList.remove(`ui-theme-${theme.key}`));
+      document.body.classList.remove('ui-theme-custom');
+      ['--bg-main', '--bg-panel', '--bg-card', '--surface', '--border-color', '--border-focus', '--primary', '--primary-hover', '--text-main', '--text-muted'].forEach(property => document.documentElement.style.removeProperty(property));
       document.body.classList.toggle('ui-theme-none', selectedTheme === 'none');
       document.body.classList.toggle('weather-no-photo', selectedTheme !== 'none' || !appSettings.weatherPhotos);
       renderThemeFloatingEffects();
@@ -3652,6 +3771,26 @@
       if (selectedTheme === 'none') {
         document.body.classList.add('weather-sunny');
         if (appSettings.weatherPhotos) verifyWeatherPhoto('sunny');
+        return;
+      }
+      if (selectedTheme === 'custom' && customTheme) {
+        document.documentElement.style.setProperty('--bg-main', customTheme.background);
+        document.documentElement.style.setProperty('--bg-panel', `color-mix(in srgb, ${customTheme.background} 78%, white)`);
+        document.documentElement.style.setProperty('--bg-card', `color-mix(in srgb, ${customTheme.background} 62%, white)`);
+        document.documentElement.style.setProperty('--surface', `color-mix(in srgb, ${customTheme.background} 34%, white)`);
+        document.documentElement.style.setProperty('--border-color', `color-mix(in srgb, ${customTheme.primary} 32%, white)`);
+        document.documentElement.style.setProperty('--border-focus', customTheme.primary);
+        document.documentElement.style.setProperty('--primary', customTheme.primary);
+        document.documentElement.style.setProperty('--primary-hover', `color-mix(in srgb, ${customTheme.primary} 78%, black)`);
+        document.documentElement.style.setProperty('--text-main', '#26353a');
+        document.documentElement.style.setProperty('--text-muted', '#56666c');
+        document.body.classList.add('ui-theme-custom');
+          document.body.style.backgroundImage = customTheme.backgroundImage
+            ? `linear-gradient(rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.24)), url("${customTheme.backgroundImage}")`
+            : `linear-gradient(135deg, color-mix(in srgb, ${customTheme.background} 78%, white), ${customTheme.background})`;
+          document.body.style.backgroundSize = customTheme.backgroundImage ? 'cover' : '';
+          document.body.style.backgroundPosition = customTheme.backgroundImage ? 'center' : '';
+          document.body.style.backgroundAttachment = customTheme.backgroundImage ? 'fixed' : '';
         return;
       }
       if (!themeDefinitions.some(theme => theme.key === selectedTheme && isThemeUnlocked(theme))) {
@@ -3662,17 +3801,22 @@
         return;
       }
       document.body.style.backgroundImage = '';
+      document.body.style.backgroundSize = '';
+      document.body.style.backgroundPosition = '';
+      document.body.style.backgroundAttachment = '';
       document.body.classList.add(`ui-theme-${selectedTheme}`);
     }
 
     function renderThemeFloatingEffects() {
       const selectedDefinition = themeDefinitions.find(theme => theme.key === selectedTheme);
-      const emoji = selectedDefinition?.emoji;
+      const emojis = selectedTheme === 'custom' && customTheme
+        ? (customTheme.emojis || []).filter(Boolean).slice(0, 3)
+        : selectedDefinition?.emoji ? [selectedDefinition.emoji] : [];
       themeFloatingEffects.innerHTML = '';
-      if (!emoji || ['none', 'white', 'black'].includes(selectedTheme) || document.body.classList.contains('birthday-theme')) return;
+      if (!emojis.length || ['none', 'white', 'black'].includes(selectedTheme) || document.body.classList.contains('birthday-theme')) return;
       const floatingEmojis = selectedTheme === 'dessert'
         ? ['🍰', '🧁', '🍩', '🍪', '🍮', '🍨', '🍦', '🍫', '🍬', '🍭', '🥧', '🥞', '🧇', '🍡', '🧋']
-        : [emoji];
+        : emojis;
       const floatingCount = selectedTheme === 'dessert' ? floatingEmojis.length : 9;
       for (let index = 0; index < floatingCount; index += 1) {
         const item = document.createElement('span');
@@ -3725,6 +3869,107 @@
       appSettings = { ...defaultSettings };
       applyCardTransparency(40);
       applySettings();
+    });
+
+    function isNewerVersion(remoteVersion, currentVersion) {
+      const remote = String(remoteVersion).split('.').map(Number);
+      const current = String(currentVersion).split('.').map(Number);
+      for (let index = 0; index < 3; index += 1) {
+        if ((remote[index] || 0) !== (current[index] || 0)) return (remote[index] || 0) > (current[index] || 0);
+      }
+      return false;
+    }
+
+    btnCheckUpdate.addEventListener('click', async () => {
+      if (UPDATE_MANIFEST_URL.includes('YOUR-DOMAIN')) {
+        appUpdateStatus.innerText = '배포 주소를 설정해야 합니다.';
+        return;
+      }
+      btnCheckUpdate.disabled = true;
+      appUpdateStatus.innerText = '업데이트 확인 중...';
+      try {
+        const response = await fetch(`${UPDATE_MANIFEST_URL}?t=${Date.now()}`, { cache: 'no-store' });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const manifest = await response.json();
+        if (!manifest.version || !manifest.apkUrl || !/^https:\/\//i.test(manifest.apkUrl)) throw new Error('안전하지 않은 APK 주소입니다.');
+        if (!isNewerVersion(manifest.version, APP_VERSION)) {
+          appUpdateStatus.innerText = '최신 버전입니다.';
+          return;
+        }
+        const updatePlugin = window.Capacitor?.Plugins?.Update;
+        if (!updatePlugin) {
+          appUpdateStatus.innerText = `v${manifest.version}이 있습니다. Android 앱에서 다운로드하세요.`;
+          return;
+        }
+        const shouldInstall = window.confirm(`새 버전 v${manifest.version}을 다운로드할까요?`);
+        if (!shouldInstall) {
+          appUpdateStatus.innerText = '업데이트를 취소했습니다.';
+          return;
+        }
+        appUpdateStatus.innerText = 'APK 다운로드 중...';
+        await updatePlugin.downloadAndInstall({ apkUrl: manifest.apkUrl });
+        appUpdateStatus.innerText = '설치 화면을 열었습니다.';
+      } catch (error) {
+        appUpdateStatus.innerText = '업데이트를 확인할 수 없습니다.';
+      } finally {
+        btnCheckUpdate.disabled = false;
+      }
+    });
+
+    function compressThemeImage(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = () => reject(new Error('이미지를 읽을 수 없습니다.'));
+        reader.onload = () => {
+          const image = new Image();
+          image.onerror = () => reject(new Error('이미지 형식을 확인할 수 없습니다.'));
+          image.onload = () => {
+            const scale = Math.min(1, 1600 / Math.max(image.naturalWidth, image.naturalHeight));
+            const canvas = document.createElement('canvas');
+            canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+            canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+            canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
+            resolve(canvas.toDataURL('image/jpeg', 0.82));
+          };
+          image.src = reader.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    customThemeImage.addEventListener('change', () => {
+      customThemeImageStatus.innerText = customThemeImage.files[0]
+        ? `${customThemeImage.files[0].name} 선택됨. 저장 시 화면 배경으로 사용합니다.`
+        : '배경 화면은 선택 사항입니다. 이미지가 있으면 색상보다 먼저 표시됩니다.';
+    });
+
+    customThemeForm.addEventListener('submit', async event => {
+      event.preventDefault();
+      const imageFile = customThemeImage.files[0];
+      let backgroundImage = customTheme?.backgroundImage || '';
+      if (imageFile) {
+        try {
+          backgroundImage = await compressThemeImage(imageFile);
+        } catch (error) {
+          customThemeImageStatus.innerText = error.message;
+          return;
+        }
+      }
+      customTheme = {
+        name: customThemeName.value.trim().slice(0, 16) || '내 테마',
+        background: customThemeBackground.value,
+        primary: customThemePrimary.value,
+        backgroundImage,
+        emojis: customThemeEmojiInputs
+          .map(input => input.value.trim())
+          .filter(Boolean)
+          .slice(0, 3)
+      };
+      localStorage.setItem('today_todo_custom_theme_v1', JSON.stringify(customTheme));
+      selectedTheme = 'custom';
+      localStorage.setItem('today_todo_selected_theme', selectedTheme);
+      renderThemeOptions();
+      applySelectedTheme();
     });
 
     const tutorialModal = document.getElementById('tutorial-modal');
@@ -4171,6 +4416,23 @@
 
     const dictionaryHistoryKey = 'today_todo_dictionary_history_v1';
     let dictionaryAudio = null;
+    const localDictionaryAudio = {
+      focus: 'sounds/pronunciations/focus.mp3',
+      study: 'sounds/pronunciations/study.mp3',
+      schedule: 'sounds/pronunciations/schedule.mp3',
+      task: 'sounds/pronunciations/task.mp3',
+      plan: 'sounds/pronunciations/plan.mp3',
+      time: 'sounds/pronunciations/time.mp3',
+      today: 'sounds/pronunciations/today.mp3',
+      tomorrow: 'sounds/pronunciations/tomorrow.mp3',
+      learn: 'sounds/pronunciations/learn.mp3',
+      practice: 'sounds/pronunciations/practice.mp3',
+      break: 'sounds/pronunciations/break.mp3',
+      goal: 'sounds/pronunciations/goal.mp3',
+      start: 'sounds/pronunciations/start.mp3',
+      finish: 'sounds/pronunciations/finish.mp3',
+      happy: 'sounds/pronunciations/happy.mp3'
+    };
     let dictionaryHistoryItems = loadStoredJson(dictionaryHistoryKey, [], value =>
       Array.isArray(value) && value.every(word => typeof word === 'string')
     ).slice(0, 8);
@@ -4217,7 +4479,8 @@
         phonetic.innerText = phoneticText;
         wordInfo.appendChild(phonetic);
       }
-      const audioUrl = entry.phonetics?.find(item => item.audio)?.audio;
+      const entryWord = (entry.word || dictionaryInput.value).trim().toLowerCase();
+      const audioUrl = localDictionaryAudio[entryWord] || entry.phonetics?.find(item => item.audio)?.audio;
       if (audioUrl) {
         const audioButton = document.createElement('button');
         audioButton.type = 'button';

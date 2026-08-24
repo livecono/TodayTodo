@@ -5,7 +5,8 @@
   "scripts": {
     "sync": "npx cap sync android",
     "open:android": "npx cap open android",
-    "build:android": "cd android && gradlew.bat assembleDebug"
+    "build:android": "cd android && gradlew.bat assembleDebug",
+    "publish:update": "powershell -ExecutionPolicy Bypass -File .\\publish-update.ps1"
   },
   "keywords": [],
   "author": "",
