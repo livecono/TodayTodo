@@ -233,26 +233,12 @@
     .theme-options { display: grid; grid-template-columns: repeat(auto-fill, minmax(82px, 1fr)); gap: 5px; margin-top: 8px; }
     .theme-option { min-width: 0; padding: 6px 4px; border: 1px solid var(--border-color); border-radius: 7px; background: var(--surface); color: var(--text-main); font: inherit; font-size: 0.69rem; font-weight: 800; line-height: 1.2; cursor: pointer; }
     .theme-option:hover, .theme-option.active { border-color: var(--primary); background: color-mix(in srgb, var(--primary) 16%, var(--surface)); }
-    .custom-theme-option-wrap { display: flex; min-width: 0; gap: 4px; }
-    .custom-theme-option-wrap .theme-option { flex: 1; }
-    .custom-theme-delete { flex: 0 0 auto; padding: 4px 6px; border: 1px solid var(--border-color); border-radius: 7px; background: var(--surface); color: var(--text-muted); font: inherit; font-size: 0.72rem; cursor: pointer; }
-    .custom-theme-delete:hover { border-color: #c75c5c; background: #fbe8e8; color: #a33f3f; }
-    .custom-theme-form { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 8px; align-items: end; margin-top: 10px; }
-    .custom-theme-field { display: grid; gap: 4px; color: var(--text-muted); font-size: 0.72rem; font-weight: 800; }
-    .custom-theme-field input[type="text"] { min-width: 0; width: 100%; padding: 7px 8px; border: 1px solid var(--border-color); border-radius: 7px; background: var(--surface); color: var(--text-main); font: inherit; }
-    .custom-theme-field input[type="color"] { width: 42px; height: 34px; padding: 2px; border: 1px solid var(--border-color); border-radius: 7px; background: var(--surface); cursor: pointer; }
-    .custom-theme-field input[type="file"] { width: 100%; min-width: 0; padding: 6px; border: 1px solid var(--border-color); border-radius: 7px; background: var(--surface); color: var(--text-main); font: inherit; font-size: 0.7rem; }
-    .custom-theme-emojis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; grid-column: 1 / -1; }
-    .custom-theme-emojis input { min-width: 0; width: 100%; padding: 7px 8px; border: 1px solid var(--border-color); border-radius: 7px; background: var(--surface); color: var(--text-main); font: inherit; font-size: 1.05rem; text-align: center; }
-    .custom-theme-image-status { grid-column: 1 / -1; min-height: 16px; color: var(--text-muted); font-size: 0.7rem; }
-    .custom-theme-save { min-height: 34px; padding: 7px 10px; border: 0; border-radius: 7px; background: var(--primary); color: #fff; font: inherit; font-size: 0.75rem; font-weight: 800; cursor: pointer; }
-    .custom-theme-save:hover { background: var(--primary-hover); }
-    .app-update-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-    .app-update-action { display: flex; align-items: center; gap: 8px; }
-    .app-update-button { flex: 0 0 auto; padding: 7px 10px; border: 0; border-radius: 7px; background: var(--primary); color: #fff; font: inherit; font-size: 0.75rem; font-weight: 800; cursor: pointer; }
-    .app-update-button:disabled { opacity: 0.55; cursor: wait; }
-    .app-update-status { color: var(--text-muted); font-size: 0.72rem; text-align: right; }
-    @media (max-width: 420px) { .custom-theme-form { grid-template-columns: minmax(0, 1fr) auto; } .custom-theme-field:first-child { grid-column: 1 / -1; } .custom-theme-save { width: 100%; } }
+    .custom-theme-builder { display: grid; gap: 8px; margin-top: 10px; padding: 10px; border: 1px dashed var(--border-color); border-radius: 8px; background: var(--surface); }
+    .custom-theme-builder input[type="text"], .custom-theme-builder input[type="file"] { width: 100%; min-width: 0; }
+    .custom-theme-emoji-inputs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
+    .custom-theme-actions { display: flex; gap: 6px; align-items: center; }
+    .custom-theme-actions button { flex: 1; }
+    .custom-theme-delete { display: block; width: 100%; margin-top: 4px; padding: 3px; border: 0; background: transparent; color: #b04c4c; font-size: 0.68rem; cursor: pointer; }
 
     .theme-floating-effects { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 2; }
     .theme-floating-emoji { position: absolute; top: 105%; opacity: 0; font-size: clamp(1.45rem, 3.3vw, 2.45rem); filter: drop-shadow(0 4px 5px rgba(35, 50, 55, 0.22)); animation: theme-emoji-float var(--theme-duration) linear var(--theme-delay) infinite; }
@@ -805,7 +791,7 @@
     }
 
     .brightness-control input {
-      width: 72px;
+      width: 100px;
       accent-color: var(--primary);
       cursor: pointer;
     }
@@ -1306,10 +1292,8 @@
     @media (max-width: 900px) {
       .main-grid { grid-template-columns: 1fr; }
       header { flex-direction: column; gap: 16px; align-items: flex-start; }
-        height: 100dvh;
-        min-height: 100dvh;
-        max-height: 100dvh;
-        overflow: hidden;
+      .header-right { width: 100%; justify-content: space-between; flex-wrap: wrap; }
+    }
 
     @media (max-width: 600px), (max-aspect-ratio: 1 / 1) {
       .brightness-control { flex: 1 1 150px; }
@@ -2703,33 +2687,6 @@
       .dictionary-search { gap: 6px; }
       .dictionary-search button { padding: 0 12px; }
     }
-
-    @media (max-width: 600px), (max-aspect-ratio: 1 / 1) {
-      html, body { width: 100%; height: 100dvh; min-height: 0; max-height: 100dvh; overflow: hidden; }
-      body { padding: 8px 6px; }
-      .app-container { height: 100%; min-height: 0; gap: 8px; overflow: hidden; }
-      header { flex: 0 0 auto; height: auto; max-height: none; overflow: visible; padding: 10px; gap: 8px; }
-      header > .header-right { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; width: 100%; }
-      header > .header-right > .brightness-control,
-      header > .header-right > .weather-info { grid-column: 1 / -1; min-height: 32px; }
-      header > .header-right > .btn-game,
-      header > .header-right > .settings-button { grid-column: auto; min-width: 0; min-height: 32px; padding: 5px 4px; font-size: 0.68rem; }
-      header > .header-right > .pet-container { grid-column: 1 / -1; grid-row: auto; justify-self: stretch; width: 100%; min-width: 0; max-width: none; height: auto; }
-      header > .header-right > .kpi-container { grid-column: 1 / -1; grid-row: auto; width: 100%; }
-      header > .timer-tools-column { order: 1; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; }
-      header > .header-right { order: 2; }
-      header > .timer-tools-column > .timer-toggle-button { min-width: 0; min-height: 32px; padding: 5px 4px; font-size: 0.68rem; }
-      header > .timer-tools-column > .timer-panel,
-      header > .timer-tools-column > .stopwatch-panel { grid-column: 1 / -1; max-height: 35dvh; overflow-y: auto; }
-      .main-grid { flex: 1 1 auto; min-height: 0; gap: 8px; overflow: hidden; }
-      .main-grid > section:first-child { min-height: 0; overflow: hidden; }
-      #timeline-panel { height: auto; min-height: 0; flex: 1 1 auto; overflow: hidden; }
-      #timeline-panel .timeline { overflow-y: auto; }
-    }
-
-    @media (max-width: 420px) {
-      header > .timer-tools-column { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
   </style>
 </head>
 <body class="weather-sunny">
@@ -2763,7 +2720,7 @@
       <div>
         <div class="brand-title">
           오늘 할 일
-          <span class="badge-version">v4.2</span>
+          <span class="badge-version">v4.3</span>
         </div>
         <div class="brand-desc">펫 키우기 스케줄러</div>
       </div>
@@ -2773,7 +2730,7 @@
         <label class="brightness-control" title="앱 화면 밝기 조절">
           <span aria-hidden="true">☀</span>
           <span>밝기</span>
-          <input type="number" id="brightness-control" min="50" max="200" value="100" step="1" inputmode="numeric" aria-label="앱 화면 밝기" />
+          <input type="range" id="brightness-control" min="50" max="200" value="100" step="1" aria-label="앱 화면 밝기" />
           <span class="brightness-value" id="brightness-value">100%</span>
         </label>
 
@@ -3002,19 +2959,18 @@
         <div class="setting-row theme-setting-row">
           <div><div class="setting-label">앱 테마</div><div class="setting-description">기본 테마와 해금한 펫의 테마 중에서 선택합니다.</div></div>
           <div class="theme-options" id="theme-options"></div>
-          <form class="custom-theme-form" id="custom-theme-form">
-            <label class="custom-theme-field">테마 이름<input id="custom-theme-name" type="text" maxlength="16" placeholder="내 테마" /></label>
-            <label class="custom-theme-field">배경색<input id="custom-theme-background" type="color" value="#dcefe9" /></label>
-            <label class="custom-theme-field">강조색<input id="custom-theme-primary" type="color" value="#4c8b81" /></label>
-            <label class="custom-theme-field">배경 화면<input id="custom-theme-image" type="file" accept="image/*" /></label>
-            <div class="custom-theme-emojis" aria-label="떠다니는 이모티콘 최대 3개">
-              <input id="custom-theme-emoji-1" type="text" maxlength="4" placeholder="🌿" aria-label="떠다니는 이모티콘 1" />
-              <input id="custom-theme-emoji-2" type="text" maxlength="4" placeholder="✨" aria-label="떠다니는 이모티콘 2" />
-              <input id="custom-theme-emoji-3" type="text" maxlength="4" placeholder="☁️" aria-label="떠다니는 이모티콘 3" />
+          <div class="custom-theme-builder">
+            <div class="setting-label">나만의 테마 만들기</div>
+            <input id="custom-theme-name" type="text" placeholder="테마 이름" aria-label="새 테마 이름" />
+            <input id="custom-theme-photo" type="file" accept="image/*" aria-label="테마 사진 첨부" />
+            <div class="custom-theme-emoji-inputs" aria-label="떠다니는 이모지 직접 입력">
+              <input class="custom-theme-emoji-input" type="text" placeholder="이모지 1" aria-label="떠다니는 이모지 1" />
+              <input class="custom-theme-emoji-input" type="text" placeholder="이모지 2" aria-label="떠다니는 이모지 2" />
+              <input class="custom-theme-emoji-input" type="text" placeholder="이모지 3" aria-label="떠다니는 이모지 3" />
             </div>
-            <div class="custom-theme-image-status" id="custom-theme-image-status">배경 화면은 선택 사항입니다. 이미지가 있으면 색상보다 먼저 표시됩니다.</div>
-            <button class="custom-theme-save" type="submit">테마 만들기</button>
-          </form>
+            <div class="custom-theme-actions"><button class="settings-reset" id="btn-create-custom-theme" type="button">테마 저장</button></div>
+            <div id="custom-theme-status" class="setting-description" role="status" aria-live="polite"></div>
+          </div>
         </div>
         <div class="setting-row setting-range-row">
           <div><div class="setting-label">카드 투명도</div><div class="setting-description">카드 배경만 투명하게 조절합니다. 테마를 바꿔도 같은 값이 유지됩니다.</div></div>
@@ -3068,13 +3024,6 @@
         <div class="setting-row">
           <div><div class="setting-label">자동 날씨 업데이트</div><div class="setting-description">앱을 열 때 위치 기반 현재 날씨를 불러옵니다.</div></div>
           <label class="setting-switch"><input type="checkbox" data-setting="autoWeather"><span class="setting-slider"></span></label>
-        </div>
-      </div>
-      <div class="settings-section">
-        <h3 class="settings-section-title">앱 업데이트</h3>
-        <div class="setting-row app-update-row">
-          <div><div class="setting-label">현재 버전 v4.2.0</div><div class="setting-description">새 APK가 배포되면 확인 후 앱 안에서 다운로드할 수 있습니다.</div></div>
-          <div class="app-update-action"><span class="app-update-status" id="app-update-status" role="status" aria-live="polite"></span><button class="app-update-button" id="btn-check-update" type="button">업데이트 다운로드</button></div>
         </div>
       </div>
       <div class="settings-footer">
@@ -3166,7 +3115,8 @@
         <button class="game-choice" data-game-mode="collect"><span class="game-choice-icon">⭐</span><span class="game-choice-name">별 모으기</span><span class="game-choice-description">별은 모으고 폭탄은 피하며 펫을 움직이세요.</span></button>
         <button class="game-choice" data-game-mode="target"><span class="game-choice-icon">🎯</span><span class="game-choice-name">빛나는 표적</span><span class="game-choice-description">사라지기 전에 표적을 눌러 콤보를 이어가세요.</span></button>
         <button class="game-choice" data-game-mode="rhythm"><span class="game-choice-icon">🎵</span><span class="game-choice-name">펫 키우기 리듬게임</span><span class="game-choice-description">화면에 나온 행동 버튼을 30초 동안 정확히 눌러 보세요.</span></button>
-        <button class="game-choice" data-game-mode="space3d"><span class="game-choice-icon">🚗</span><span class="game-choice-name">3D 자동차 러너</span><span class="game-choice-description">3개의 레인을 달리며 보석을 모으고 다른 자동차를 피하세요.</span></button>
+        <button class="game-choice" data-game-mode="space3d"><span class="game-choice-icon">🚗</span><span class="game-choice-name">네온 보석 러너 3D</span><span class="game-choice-description">보석 콤보를 쌓고 자석과 방어막을 모으며 차량을 아슬아슬하게 피하세요.</span></button>
+        <button class="game-choice" data-game-mode="orbit3d"><span class="game-choice-icon">🪐</span><span class="game-choice-name">코어 헌터 3D</span><span class="game-choice-description">우주 경기장을 자유롭게 누비며 에너지 코어를 모으고 운석을 피하세요.</span></button>
       </div>
     </div>
   </div>
@@ -3206,15 +3156,31 @@
     <div class="game-3d-modal">
       <div class="game-3d-header">
         <div>
-          <div class="game-3d-title">🚗 3D 자동차 러너</div>
+          <div class="game-3d-title">🚗 네온 보석 러너 3D</div>
           <div class="game-3d-stats" id="game-3d-stats">보석 0 · 생명 3 · 속도 x1.0</div>
         </div>
         <button class="game-3d-close" id="btn-close-game-3d" aria-label="3D 게임 닫기">✕</button>
       </div>
       <div class="game-3d-stage"><canvas id="game3d-canvas"></canvas></div>
       <div class="game-3d-footer">
-        <span class="game-3d-help">← → 방향키 또는 화면의 왼쪽·오른쪽을 눌러 이동하세요.</span>
+        <span class="game-3d-help">← → 또는 A/D로 이동 · 🟡 방어막 · 🩷 자석 · 60초 동안 최고 콤보에 도전하세요.</span>
         <button class="game-3d-button" id="btn-restart-game-3d">다시 시작</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="orbit-3d-modal">
+    <div class="game-3d-modal orbit-3d-modal">
+      <div class="game-3d-header">
+        <div>
+          <div class="game-3d-title">🪐 코어 헌터 3D</div>
+          <div class="game-3d-stats" id="orbit-3d-stats">코어 0 · 생명 3 · 콤보 x1</div>
+        </div>
+        <button class="game-3d-close" id="btn-close-orbit-3d" aria-label="코어 헌터 3D 닫기">✕</button>
+      </div>
+      <div class="game-3d-stage"><canvas id="orbit-3d-canvas"></canvas></div>
+      <div class="game-3d-footer">
+        <span class="game-3d-help">WASD 또는 방향키로 이동 · 코어를 연속 수집하고 운석을 피하세요 · 45초 도전</span>
+        <button class="game-3d-button" id="btn-restart-orbit-3d">다시 시작</button>
       </div>
     </div>
   </div>
@@ -3232,7 +3198,11 @@
           setTimeout(() => splash.remove(), 500);
         }
       }, 2000); // 정확히 2,000ms = 2초
+      setTimeout(checkForForcedApkUpdate, 2500);
     });
+
+    const appVersion = '4.3.0';
+    const updateManifestUrl = 'https://raw.githubusercontent.com/livecono/TodayTodo/main/updates/latest.json';
 
     function formatLocalDate(date = new Date()) {
       const year = date.getFullYear();
@@ -3567,14 +3537,12 @@
     const cardTransparencyValue = document.getElementById('card-transparency-value');
     const settingInputs = document.querySelectorAll('[data-setting]');
     const themeOptions = document.getElementById('theme-options');
-    const customThemeForm = document.getElementById('custom-theme-form');
-    const customThemeName = document.getElementById('custom-theme-name');
-    const customThemeBackground = document.getElementById('custom-theme-background');
-    const customThemePrimary = document.getElementById('custom-theme-primary');
-    const customThemeImage = document.getElementById('custom-theme-image');
-    const customThemeImageStatus = document.getElementById('custom-theme-image-status');
-    const customThemeEmojiInputs = [1, 2, 3].map(index => document.getElementById(`custom-theme-emoji-${index}`));
     const themeFloatingEffects = document.getElementById('theme-floating-effects');
+    const customThemeName = document.getElementById('custom-theme-name');
+    const customThemePhoto = document.getElementById('custom-theme-photo');
+    const customThemeEmojiInputs = document.querySelectorAll('.custom-theme-emoji-input');
+    const btnCreateCustomTheme = document.getElementById('btn-create-custom-theme');
+    const customThemeStatus = document.getElementById('custom-theme-status');
     const soundModal = document.getElementById('sound-modal');
     const btnOpenSounds = document.getElementById('btn-open-sounds');
     const btnCloseSounds = document.getElementById('btn-close-sounds');
@@ -3592,9 +3560,6 @@
     const dictionaryStatus = document.getElementById('dictionary-status');
     const dictionaryResult = document.getElementById('dictionary-result');
     const dictionaryHistory = document.getElementById('dictionary-history');
-    const btnCheckUpdate = document.getElementById('btn-check-update');
-    const appUpdateStatus = document.getElementById('app-update-status');
-    const APK_DOWNLOAD_URL = 'https://raw.githubusercontent.com/livecono/TodayTodo/main/updates/today-todo-4.2.0.apk';
 
     const todoDraftStorageKey = 'today_todo_draft_v1';
     function saveTodoDraft() {
@@ -3674,13 +3639,11 @@
       { key: 'pet-chicken', label: '닭', emoji: '🐔', petKey: 'duck', hatchLevel: 7 },
       { key: 'pet-dragon', label: '드래곤', emoji: '🐲', petKey: 'egg', hatchLevel: 10 }
     ];
+    const customThemeStorageKey = 'today_todo_custom_themes_v1';
+    let customThemes = loadStoredJson(customThemeStorageKey, [], value => Array.isArray(value)
+      && value.every(theme => theme && typeof theme.key === 'string' && typeof theme.name === 'string'
+        && typeof theme.emoji === 'string' && (!theme.photo || typeof theme.photo === 'string')));
     let selectedTheme = localStorage.getItem('today_todo_selected_theme') || 'none';
-    let customTheme = loadStoredJson('today_todo_custom_theme_v1', null, value =>
-      value && typeof value.name === 'string' && value.name.length <= 16
-      && /^#[0-9a-f]{6}$/i.test(value.background) && /^#[0-9a-f]{6}$/i.test(value.primary)
-      && (!value.backgroundImage || /^data:image\/(jpeg|webp|png);base64,/.test(value.backgroundImage))
-      && (!value.emojis || Array.isArray(value.emojis))
-    );
     const storedCardTransparencyValue = localStorage.getItem('today_todo_card_transparency');
     const storedCardTransparency = Number(storedCardTransparencyValue);
     let cardTransparency = Number.isFinite(storedCardTransparency)
@@ -3705,9 +3668,34 @@
       return (petData[theme.petKey]?.level || 1) >= theme.hatchLevel;
     }
 
+    function getAllThemeDefinitions() {
+      return [...themeDefinitions, ...customThemes.map(theme => ({ ...theme, label: theme.name, custom: true }))];
+    }
+
+    function getCustomThemeEmojis() {
+      return [...customThemeEmojiInputs]
+        .map(input => input.value)
+        .filter(value => value !== '');
+    }
+
+    function saveCustomThemes() {
+      localStorage.setItem(customThemeStorageKey, JSON.stringify(customThemes));
+    }
+
+    function deleteCustomTheme(themeKey) {
+      customThemes = customThemes.filter(theme => theme.key !== themeKey);
+      saveCustomThemes();
+      if (selectedTheme === themeKey) {
+        selectedTheme = 'none';
+        localStorage.setItem('today_todo_selected_theme', selectedTheme);
+      }
+      renderThemeOptions();
+      applySelectedTheme();
+    }
+
     function renderThemeOptions() {
-      const availableThemes = themeDefinitions.filter(isThemeUnlocked);
-      if (!availableThemes.some(theme => theme.key === selectedTheme) && !(selectedTheme === 'custom' && customTheme)) selectedTheme = 'none';
+      const availableThemes = getAllThemeDefinitions().filter(theme => theme.custom || isThemeUnlocked(theme));
+      if (!availableThemes.some(theme => theme.key === selectedTheme)) selectedTheme = 'none';
       themeOptions.innerHTML = '';
       availableThemes.forEach(theme => {
         const button = document.createElement('button');
@@ -3721,39 +3709,19 @@
           renderThemeOptions();
           applySelectedTheme();
         });
-        themeOptions.appendChild(button);
+        const wrapper = document.createElement('div');
+        wrapper.appendChild(button);
+        if (theme.custom) {
+          const deleteButton = document.createElement('button');
+          deleteButton.type = 'button';
+          deleteButton.className = 'custom-theme-delete';
+          deleteButton.innerText = '삭제';
+          deleteButton.setAttribute('aria-label', `${theme.label} 삭제`);
+          deleteButton.addEventListener('click', () => deleteCustomTheme(theme.key));
+          wrapper.appendChild(deleteButton);
+        }
+        themeOptions.appendChild(wrapper);
       });
-      if (customTheme) {
-        const optionWrap = document.createElement('div');
-        optionWrap.className = 'custom-theme-option-wrap';
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.className = `theme-option${selectedTheme === 'custom' ? ' active' : ''}`;
-        button.dataset.theme = 'custom';
-        button.innerText = `🎨 ${customTheme.name}`;
-        button.addEventListener('click', () => {
-          selectedTheme = 'custom';
-          localStorage.setItem('today_todo_selected_theme', selectedTheme);
-          renderThemeOptions();
-          applySelectedTheme();
-        });
-        const deleteButton = document.createElement('button');
-        deleteButton.type = 'button';
-        deleteButton.className = 'custom-theme-delete';
-        deleteButton.innerText = '삭제';
-        deleteButton.setAttribute('aria-label', `${customTheme.name} 테마 삭제`);
-        deleteButton.addEventListener('click', () => {
-          if (appSettings.confirmDelete && !window.confirm('사용자 테마를 삭제할까요?')) return;
-          customTheme = null;
-          localStorage.removeItem('today_todo_custom_theme_v1');
-          if (selectedTheme === 'custom') selectedTheme = 'none';
-          localStorage.setItem('today_todo_selected_theme', selectedTheme);
-          renderThemeOptions();
-          applySelectedTheme();
-        });
-        optionWrap.append(button, deleteButton);
-        themeOptions.appendChild(optionWrap);
-      }
       localStorage.setItem('today_todo_selected_theme', selectedTheme);
     }
 
@@ -3761,8 +3729,11 @@
       weatherPhotoRequestId += 1;
       document.body.classList.remove(...weatherThemeClasses);
       themeDefinitions.forEach(theme => document.body.classList.remove(`ui-theme-${theme.key}`));
-      document.body.classList.remove('ui-theme-custom');
-      ['--bg-main', '--bg-panel', '--bg-card', '--surface', '--border-color', '--border-focus', '--primary', '--primary-hover', '--text-main', '--text-muted'].forEach(property => document.documentElement.style.removeProperty(property));
+      document.body.style.backgroundImage = '';
+      document.body.style.backgroundColor = '';
+      document.body.style.backgroundSize = '';
+      document.body.style.backgroundPosition = '';
+      document.body.style.backgroundAttachment = '';
       document.body.classList.toggle('ui-theme-none', selectedTheme === 'none');
       document.body.classList.toggle('weather-no-photo', selectedTheme !== 'none' || !appSettings.weatherPhotos);
       renderThemeFloatingEffects();
@@ -3772,55 +3743,42 @@
         if (appSettings.weatherPhotos) verifyWeatherPhoto('sunny');
         return;
       }
-      if (selectedTheme === 'custom' && customTheme) {
-        document.documentElement.style.setProperty('--bg-main', customTheme.background);
-        document.documentElement.style.setProperty('--bg-panel', `color-mix(in srgb, ${customTheme.background} 78%, white)`);
-        document.documentElement.style.setProperty('--bg-card', `color-mix(in srgb, ${customTheme.background} 62%, white)`);
-        document.documentElement.style.setProperty('--surface', `color-mix(in srgb, ${customTheme.background} 34%, white)`);
-        document.documentElement.style.setProperty('--border-color', `color-mix(in srgb, ${customTheme.primary} 32%, white)`);
-        document.documentElement.style.setProperty('--border-focus', customTheme.primary);
-        document.documentElement.style.setProperty('--primary', customTheme.primary);
-        document.documentElement.style.setProperty('--primary-hover', `color-mix(in srgb, ${customTheme.primary} 78%, black)`);
-        document.documentElement.style.setProperty('--text-main', '#26353a');
-        document.documentElement.style.setProperty('--text-muted', '#56666c');
-        document.body.classList.add('ui-theme-custom');
-          document.body.style.backgroundImage = customTheme.backgroundImage
-            ? `linear-gradient(rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.24)), url("${customTheme.backgroundImage}")`
-            : `linear-gradient(135deg, color-mix(in srgb, ${customTheme.background} 78%, white), ${customTheme.background})`;
-          document.body.style.backgroundSize = customTheme.backgroundImage ? 'cover' : '';
-          document.body.style.backgroundPosition = customTheme.backgroundImage ? 'center' : '';
-          document.body.style.backgroundAttachment = customTheme.backgroundImage ? 'fixed' : '';
-        return;
-      }
-      if (!themeDefinitions.some(theme => theme.key === selectedTheme && isThemeUnlocked(theme))) {
+      const selectedDefinition = getAllThemeDefinitions().find(theme => theme.key === selectedTheme);
+      if (!selectedDefinition || (!selectedDefinition.custom && !isThemeUnlocked(selectedDefinition))) {
         selectedTheme = 'none';
         localStorage.setItem('today_todo_selected_theme', selectedTheme);
         document.body.classList.add('ui-theme-none');
         document.body.classList.add('weather-sunny');
         return;
       }
-      document.body.style.backgroundImage = '';
-      document.body.style.backgroundSize = '';
-      document.body.style.backgroundPosition = '';
-      document.body.style.backgroundAttachment = '';
-      document.body.classList.add(`ui-theme-${selectedTheme}`);
+      if (selectedDefinition.custom) {
+        document.body.style.backgroundColor = '#dcecef';
+        document.body.style.backgroundImage = selectedDefinition.photo
+          ? `linear-gradient(rgba(20, 35, 45, 0.16), rgba(20, 35, 45, 0.16)), url("${selectedDefinition.photo}")`
+          : 'linear-gradient(135deg, #d9eee8, #b9dce1 52%, #f4d8c9)';
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundPosition = 'center';
+        document.body.style.backgroundAttachment = 'fixed';
+      } else {
+        document.body.classList.add(`ui-theme-${selectedTheme}`);
+      }
     }
 
     function renderThemeFloatingEffects() {
-      const selectedDefinition = themeDefinitions.find(theme => theme.key === selectedTheme);
-      const emojis = selectedTheme === 'custom' && customTheme
-        ? (customTheme.emojis || []).filter(Boolean).slice(0, 3)
-        : selectedDefinition?.emoji ? [selectedDefinition.emoji] : [];
+      const selectedDefinition = getAllThemeDefinitions().find(theme => theme.key === selectedTheme);
+      const floatingEmojis = selectedDefinition?.custom
+        ? (Array.isArray(selectedDefinition.emojis) && selectedDefinition.emojis.length ? selectedDefinition.emojis : [selectedDefinition.emoji])
+        : [selectedDefinition?.emoji];
       themeFloatingEffects.innerHTML = '';
-      if (!emojis.length || ['none', 'white', 'black'].includes(selectedTheme) || document.body.classList.contains('birthday-theme')) return;
-      const floatingEmojis = selectedTheme === 'dessert'
+      if (!floatingEmojis[0] || ['none', 'white', 'black'].includes(selectedTheme) || document.body.classList.contains('birthday-theme')) return;
+      const effectEmojis = selectedTheme === 'dessert'
         ? ['🍰', '🧁', '🍩', '🍪', '🍮', '🍨', '🍦', '🍫', '🍬', '🍭', '🥧', '🥞', '🧇', '🍡', '🧋']
-        : emojis;
-      const floatingCount = selectedTheme === 'dessert' ? floatingEmojis.length : 9;
+        : floatingEmojis;
+      const floatingCount = selectedTheme === 'dessert' ? effectEmojis.length : 9;
       for (let index = 0; index < floatingCount; index += 1) {
         const item = document.createElement('span');
         item.className = 'theme-floating-emoji';
-        item.innerText = floatingEmojis[index % floatingEmojis.length];
+        item.innerText = effectEmojis[index % effectEmojis.length];
         item.style.left = `${selectedTheme === 'dessert' ? 4 + (index * 23) % 92 : 8 + index * 11}%`;
         item.style.setProperty('--theme-delay', `${-(index * (selectedTheme === 'dessert' ? 1.1 : 1.7))}s`);
         item.style.setProperty('--theme-duration', `${13 + (index % 4) * 2 + (selectedTheme === 'dessert' ? index % 3 : 0)}s`);
@@ -3828,6 +3786,38 @@
         themeFloatingEffects.appendChild(item);
       }
     }
+
+    btnCreateCustomTheme.addEventListener('click', () => {
+      const name = customThemeName.value;
+      const file = customThemePhoto.files[0];
+      if (!name.trim()) {
+        customThemeStatus.innerText = '테마 이름을 입력하세요.';
+        customThemeName.focus();
+        return;
+      }
+      const saveTheme = photo => {
+        const themeEmojis = getCustomThemeEmojis();
+        const theme = { key: `custom-${Date.now()}`, name, emojis: themeEmojis, emoji: themeEmojis[0] || '✨', photo };
+        customThemes.push(theme);
+        saveCustomThemes();
+        selectedTheme = theme.key;
+        localStorage.setItem('today_todo_selected_theme', selectedTheme);
+        customThemeName.value = '';
+        customThemePhoto.value = '';
+        customThemeEmojiInputs.forEach(input => { input.value = ''; });
+        customThemeStatus.innerText = `${name} 테마를 저장했습니다.`;
+        renderThemeOptions();
+        applySelectedTheme();
+      };
+      if (!file) {
+        saveTheme('');
+        return;
+      }
+      const reader = new FileReader();
+      reader.addEventListener('load', () => saveTheme(String(reader.result)));
+      reader.addEventListener('error', () => { customThemeStatus.innerText = '사진을 읽지 못했습니다.'; });
+      reader.readAsDataURL(file);
+    });
 
     function applySettings() {
       document.body.classList.toggle('weather-no-photo', !appSettings.weatherPhotos);
@@ -3868,81 +3858,6 @@
       appSettings = { ...defaultSettings };
       applyCardTransparency(40);
       applySettings();
-    });
-
-    btnCheckUpdate.addEventListener('click', async () => {
-      const updatePlugin = window.Capacitor?.Plugins?.Update;
-      if (!updatePlugin) {
-        appUpdateStatus.innerText = 'APK 다운로드 주소로 이동합니다.';
-        window.location.assign(APK_DOWNLOAD_URL);
-        return;
-      }
-      btnCheckUpdate.disabled = true;
-      appUpdateStatus.innerText = 'APK 다운로드 중...';
-      try {
-        await updatePlugin.downloadAndInstall({ apkUrl: APK_DOWNLOAD_URL });
-        appUpdateStatus.innerText = '설치 화면을 열었습니다.';
-      } catch (error) {
-        appUpdateStatus.innerText = '업데이트를 확인할 수 없습니다.';
-      } finally {
-        btnCheckUpdate.disabled = false;
-      }
-    });
-
-    function compressThemeImage(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onerror = () => reject(new Error('이미지를 읽을 수 없습니다.'));
-        reader.onload = () => {
-          const image = new Image();
-          image.onerror = () => reject(new Error('이미지 형식을 확인할 수 없습니다.'));
-          image.onload = () => {
-            const scale = Math.min(1, 1600 / Math.max(image.naturalWidth, image.naturalHeight));
-            const canvas = document.createElement('canvas');
-            canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
-            canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
-            canvas.getContext('2d').drawImage(image, 0, 0, canvas.width, canvas.height);
-            resolve(canvas.toDataURL('image/jpeg', 0.82));
-          };
-          image.src = reader.result;
-        };
-        reader.readAsDataURL(file);
-      });
-    }
-
-    customThemeImage.addEventListener('change', () => {
-      customThemeImageStatus.innerText = customThemeImage.files[0]
-        ? `${customThemeImage.files[0].name} 선택됨. 저장 시 화면 배경으로 사용합니다.`
-        : '배경 화면은 선택 사항입니다. 이미지가 있으면 색상보다 먼저 표시됩니다.';
-    });
-
-    customThemeForm.addEventListener('submit', async event => {
-      event.preventDefault();
-      const imageFile = customThemeImage.files[0];
-      let backgroundImage = customTheme?.backgroundImage || '';
-      if (imageFile) {
-        try {
-          backgroundImage = await compressThemeImage(imageFile);
-        } catch (error) {
-          customThemeImageStatus.innerText = error.message;
-          return;
-        }
-      }
-      customTheme = {
-        name: customThemeName.value.trim().slice(0, 16) || '내 테마',
-        background: customThemeBackground.value,
-        primary: customThemePrimary.value,
-        backgroundImage,
-        emojis: customThemeEmojiInputs
-          .map(input => input.value.trim())
-          .filter(Boolean)
-          .slice(0, 3)
-      };
-      localStorage.setItem('today_todo_custom_theme_v1', JSON.stringify(customTheme));
-      selectedTheme = 'custom';
-      localStorage.setItem('today_todo_selected_theme', selectedTheme);
-      renderThemeOptions();
-      applySelectedTheme();
     });
 
     const tutorialModal = document.getElementById('tutorial-modal');
@@ -4389,23 +4304,6 @@
 
     const dictionaryHistoryKey = 'today_todo_dictionary_history_v1';
     let dictionaryAudio = null;
-    const localDictionaryAudio = {
-      focus: 'sounds/pronunciations/focus.mp3',
-      study: 'sounds/pronunciations/study.mp3',
-      schedule: 'sounds/pronunciations/schedule.mp3',
-      task: 'sounds/pronunciations/task.mp3',
-      plan: 'sounds/pronunciations/plan.mp3',
-      time: 'sounds/pronunciations/time.mp3',
-      today: 'sounds/pronunciations/today.mp3',
-      tomorrow: 'sounds/pronunciations/tomorrow.mp3',
-      learn: 'sounds/pronunciations/learn.mp3',
-      practice: 'sounds/pronunciations/practice.mp3',
-      break: 'sounds/pronunciations/break.mp3',
-      goal: 'sounds/pronunciations/goal.mp3',
-      start: 'sounds/pronunciations/start.mp3',
-      finish: 'sounds/pronunciations/finish.mp3',
-      happy: 'sounds/pronunciations/happy.mp3'
-    };
     let dictionaryHistoryItems = loadStoredJson(dictionaryHistoryKey, [], value =>
       Array.isArray(value) && value.every(word => typeof word === 'string')
     ).slice(0, 8);
@@ -4452,8 +4350,7 @@
         phonetic.innerText = phoneticText;
         wordInfo.appendChild(phonetic);
       }
-      const entryWord = (entry.word || dictionaryInput.value).trim().toLowerCase();
-      const audioUrl = localDictionaryAudio[entryWord] || entry.phonetics?.find(item => item.audio)?.audio;
+      const audioUrl = entry.phonetics?.find(item => item.audio)?.audio;
       if (audioUrl) {
         const audioButton = document.createElement('button');
         audioButton.type = 'button';
@@ -4617,7 +4514,9 @@
       localStorage.setItem('today_todo_brightness_v2', String(brightness));
     }
 
-    applyBrightness(100);
+    const storedBrightnessValue = Number(localStorage.getItem('today_todo_brightness_v2'));
+    const initialBrightness = Number.isFinite(storedBrightnessValue) ? storedBrightnessValue : 100;
+    applyBrightness(initialBrightness);
     brightnessControl.addEventListener('input', (event) => applyBrightness(event.target.value));
 
     function updateBirthdayTheme() {
@@ -5807,6 +5706,13 @@
     gameChoiceBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         gameMode = btn.dataset.gameMode;
+        if (gameMode === 'orbit3d') {
+          gameSelectionModal.classList.remove('active');
+          loadThreeLibrary()
+            .then(() => startOrbit3dGame())
+            .catch(() => showOfflineWarning('3D 게임을 불러오지 못했습니다.'));
+          return;
+        }
         if (gameMode === 'space3d') {
           if (!navigator.onLine) {
             showOfflineWarning('3D 보석 러너는 인터넷 연결이 필요합니다. 다른 미니게임은 오프라인에서도 플레이할 수 있습니다.');
@@ -6224,14 +6130,14 @@
 
     function targetGameOver() {
       isPlaying = false;
-      addExp(targetHits * 4);
+      addExp(Math.min(60, targetHits * 3));
       showGameOver(`표적 ${targetHits}개`, `실수 ${targetMisses}회 · 최고 콤보: ${targetBestCombo} | 획득 경험치: +${targetHits * 4} EXP`);
     }
 
     function rhythmGameOver() {
       isPlaying = false;
       rhythmActionButtons.classList.remove('active');
-      addExp(rhythmHits * 5);
+      addExp(Math.min(90, rhythmHits * 3));
       showGameOver(`정확한 행동 ${rhythmHits}회`, `실수: ${rhythmMisses}회 | 획득 경험치: +${rhythmHits * 5} EXP`);
     }
 
@@ -6330,7 +6236,7 @@
 
     function gameOver() {
       isPlaying = false;
-      const expEarned = Math.floor(score / 4);
+      const expEarned = Math.min(60, Math.floor(score / 6));
       addExp(expEarned);
 
       ctx.fillStyle = 'rgba(15, 23, 42, 0.75)';
@@ -6352,7 +6258,7 @@
 
     function collectGameOver() {
       isPlaying = false;
-      const expEarned = collectedStars * 3;
+      const expEarned = Math.min(75, collectedStars * 4);
       addExp(expEarned);
 
       ctx.fillStyle = 'rgba(15, 23, 42, 0.75)';
@@ -6374,6 +6280,11 @@
     const game3dStats = document.getElementById('game-3d-stats');
     const btnCloseGame3d = document.getElementById('btn-close-game-3d');
     const btnRestartGame3d = document.getElementById('btn-restart-game-3d');
+    const orbit3dModal = document.getElementById('orbit-3d-modal');
+    const orbit3dCanvas = document.getElementById('orbit-3d-canvas');
+    const orbit3dStats = document.getElementById('orbit-3d-stats');
+    const btnCloseOrbit3d = document.getElementById('btn-close-orbit-3d');
+    const btnRestartOrbit3d = document.getElementById('btn-restart-orbit-3d');
     let renderer3d;
     let scene3d;
     let camera3d;
@@ -6383,12 +6294,30 @@
     let lane3d = 1;
     let score3d = 0;
     let lives3d = 3;
+    let combo3d = 0;
+    let shield3d = 0;
+    let magnet3d = 0;
+    let nearMisses3d = 0;
     let elapsed3d = 0;
     let lastFrame3d = 0;
     let nextSpawn3d = 0;
     let objects3d = [];
     const lanePositions3d = [-2, 0, 2];
     let threeLoadPromise = null;
+    let orbitRenderer3d;
+    let orbitScene3d;
+    let orbitCamera3d;
+    let orbitPlayer3d;
+    let orbitAnimation3d;
+    let isPlayingOrbit3d = false;
+    let orbitCoreCount = 0;
+    let orbitLives = 3;
+    let orbitCombo = 0;
+    let orbitElapsed = 0;
+    let orbitLastFrame = 0;
+    let orbitSpawnTimer = 0;
+    let orbitObjects = [];
+    const orbitKeys = { left: false, right: false, up: false, down: false };
 
     function loadThreeLibrary() {
       if (window.THREE) return Promise.resolve();
@@ -6460,7 +6389,8 @@
 
     function update3dStats() {
       const speed = 1 + elapsed3d * 0.08 + score3d * 0.012;
-      game3dStats.innerText = `보석 ${score3d} · 생명 ${lives3d} · 속도 x${speed.toFixed(1)}`;
+      const powerups = `${shield3d ? `🛡️${shield3d}s` : ''}${magnet3d ? ` 🧲${magnet3d}s` : ''}`;
+      game3dStats.innerText = `보석 ${score3d} · 콤보 x${Math.max(1, combo3d)} · 생명 ${lives3d} · 속도 x${speed.toFixed(1)}${powerups}`;
     }
 
     function dispose3dObject(object) {
@@ -6487,6 +6417,7 @@
       renderer3d = new THREE.WebGLRenderer({ canvas: game3dCanvas, antialias: true });
       renderer3d.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       renderer3d.setSize(width, height, false);
+      renderer3d.shadowMap.enabled = true;
       scene3d = new THREE.Scene();
       scene3d.background = new THREE.Color(0x0b1320);
       camera3d = new THREE.PerspectiveCamera(58, width / height, 0.1, 100);
@@ -6495,6 +6426,7 @@
       scene3d.add(new THREE.HemisphereLight(0xd9f3ff, 0x172333, 2.1));
       const keyLight = new THREE.DirectionalLight(0xffffff, 2.4);
       keyLight.position.set(-4, 7, 5);
+      keyLight.castShadow = true;
       scene3d.add(keyLight);
 
       const ground = new THREE.Mesh(
@@ -6517,7 +6449,9 @@
     }
 
     function spawn3dObject() {
-      const isGem = Math.random() > 0.35;
+      const roll = Math.random();
+      const isGem = roll > 0.38;
+      const isPowerup = roll >= 0.28 && roll <= 0.38;
       if (isGem) {
         const gem = new THREE.Mesh(
           new THREE.OctahedronGeometry(0.48, 0),
@@ -6531,7 +6465,26 @@
         );
         gem.position.set(lanePositions3d[Math.floor(Math.random() * 3)], 0.72, -28);
         scene3d.add(gem);
-        objects3d.push({ mesh: gem, isGem: true });
+        objects3d.push({ mesh: gem, isGem: true, lane: Math.round((gem.position.x + 2) / 2) });
+        return;
+      }
+
+      if (isPowerup) {
+        const type = Math.random() > 0.5 ? 'shield' : 'magnet';
+        const powerup = new THREE.Mesh(
+          type === 'shield' ? new THREE.TorusGeometry(0.38, 0.1, 10, 24) : new THREE.SphereGeometry(0.42, 16, 12),
+          new THREE.MeshStandardMaterial({
+            color: type === 'shield' ? 0xfbbf24 : 0xf472b6,
+            emissive: type === 'shield' ? 0xb45309 : 0xbe185d,
+            emissiveIntensity: 1.1,
+            roughness: 0.2,
+            metalness: 0.35
+          })
+        );
+        powerup.position.set(lanePositions3d[Math.floor(Math.random() * 3)], 0.8, -28);
+        powerup.rotation.x = Math.PI / 2;
+        scene3d.add(powerup);
+        objects3d.push({ mesh: powerup, isGem: false, isPowerup: true, powerupType: type });
         return;
       }
 
@@ -6571,15 +6524,16 @@
       });
       mesh.position.set(lanePositions3d[Math.floor(Math.random() * 3)], 0, -28);
       scene3d.add(mesh);
-      objects3d.push({ mesh, isGem: false });
+      objects3d.push({ mesh, isGem: false, lane: Math.round((mesh.position.x + 2) / 2) });
     }
 
     function finish3dGame() {
       if (!isPlaying3d) return;
       isPlaying3d = false;
       cancelAnimationFrame(animation3d);
-      addExp(score3d * 2);
-      game3dStats.innerText = `게임 종료 · 보석 ${score3d}개 · 획득 +${score3d * 2} EXP`;
+      const expEarned = Math.min(120, score3d * 2 + nearMisses3d);
+      addExp(expEarned);
+      game3dStats.innerText = `게임 종료 · 보석 ${score3d}개 · 근접 회피 ${nearMisses3d}회 · 획득 +${expEarned} EXP`;
     }
 
     function animate3d(time) {
@@ -6595,19 +6549,37 @@
       }
       player3d.position.x += (lanePositions3d[lane3d] - player3d.position.x) * Math.min(1, delta * 10);
       player3d.rotation.set(0, 0, 0);
-      const speed3d = 7.5 + elapsed3d * 0.8 + score3d * 0.12;
+      const speed3d = Math.min(16, 7.2 + elapsed3d * 0.55 + score3d * 0.05);
+      if (shield3d > 0) shield3d = Math.max(0, shield3d - delta);
+      if (magnet3d > 0) magnet3d = Math.max(0, magnet3d - delta);
       objects3d.forEach(item => {
         item.mesh.position.z += (item.isGem ? speed3d + 0.7 : speed3d) * delta;
-        if (item.isGem) item.mesh.rotation.y += delta * 2.8;
+        if (item.isGem || item.isPowerup) item.mesh.rotation.y += delta * 2.8;
       });
       objects3d = objects3d.filter(item => {
-        const hit = Math.abs(item.mesh.position.x - player3d.position.x) < 0.72 && item.mesh.position.z > 3.25;
+        const laneHit = Math.abs(item.mesh.position.x - player3d.position.x) < (item.isGem && magnet3d > 0 ? 1.7 : 0.72);
+        const hit = laneHit && item.mesh.position.z > 3.25;
         if (hit) {
-          if (item.isGem) score3d++;
-          else lives3d--;
+          if (item.isGem) {
+            score3d += 1 + Math.floor(combo3d / 5);
+            combo3d += 1;
+          } else if (item.isPowerup) {
+            if (item.powerupType === 'shield') shield3d = 8;
+            else magnet3d = 8;
+          } else if (shield3d > 0) {
+            shield3d = 0;
+            combo3d = 0;
+          } else {
+            lives3d--;
+            combo3d = 0;
+          }
           scene3d.remove(item.mesh);
           dispose3dObject(item.mesh);
           return false;
+        }
+        if (!item.isGem && !item.isPowerup && item.mesh.position.z > 5.4 && item.mesh.position.z < 5.6 && laneHit) {
+          nearMisses3d += 1;
+          combo3d += 1;
         }
         if (item.mesh.position.z > 7) {
           scene3d.remove(item.mesh);
@@ -6617,8 +6589,182 @@
         return true;
       });
       update3dStats();
-      if (lives3d <= 0) finish3dGame();
+      if (lives3d <= 0 || elapsed3d >= 60) finish3dGame();
       renderer3d.render(scene3d, camera3d);
+    }
+
+    function updateOrbit3dStats() {
+      orbit3dStats.innerText = `코어 ${orbitCoreCount} · 생명 ${orbitLives} · 콤보 x${Math.max(1, orbitCombo)} · ${Math.max(0, 45 - Math.floor(orbitElapsed))}초`;
+    }
+
+    function createOrbitPlayer() {
+      const player = new THREE.Group();
+      const body = new THREE.Mesh(
+        new THREE.ConeGeometry(0.55, 1.35, 6),
+        new THREE.MeshStandardMaterial({ color: 0x54d6ff, emissive: 0x087ea4, emissiveIntensity: 0.8, metalness: 0.55, roughness: 0.22 })
+      );
+      body.rotation.x = -Math.PI / 2;
+      body.position.y = 0.55;
+      player.add(body);
+      const ring = new THREE.Mesh(
+        new THREE.TorusGeometry(0.7, 0.07, 8, 24),
+        new THREE.MeshBasicMaterial({ color: 0x8b5cf6, transparent: true, opacity: 0.9 })
+      );
+      ring.rotation.x = Math.PI / 2;
+      ring.position.y = 0.12;
+      player.add(ring);
+      player.position.set(0, 0, 0);
+      return player;
+    }
+
+    function clearOrbit3dObjects() {
+      orbitObjects.forEach(item => {
+        orbitScene3d.remove(item.mesh);
+        dispose3dObject(item.mesh);
+      });
+      orbitObjects = [];
+    }
+
+    function setupOrbit3dScene() {
+      const stage = orbit3dCanvas.parentElement;
+      const width = Math.max(1, stage.clientWidth);
+      const height = Math.max(1, stage.clientHeight);
+      orbitRenderer3d = new THREE.WebGLRenderer({ canvas: orbit3dCanvas, antialias: true });
+      orbitRenderer3d.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      orbitRenderer3d.setSize(width, height, false);
+      orbitScene3d = new THREE.Scene();
+      orbitScene3d.background = new THREE.Color(0x090b22);
+      orbitCamera3d = new THREE.PerspectiveCamera(48, width / height, 0.1, 100);
+      orbitCamera3d.position.set(0, 14, 8);
+      orbitCamera3d.lookAt(0, 0, 0);
+      orbitScene3d.add(new THREE.HemisphereLight(0xb8c7ff, 0x10102c, 2.2));
+      const light = new THREE.PointLight(0x67e8f9, 3.2, 24);
+      light.position.set(0, 5, 0);
+      orbitScene3d.add(light);
+      const arena = new THREE.Mesh(
+        new THREE.CylinderGeometry(7.2, 7.2, 0.22, 64),
+        new THREE.MeshStandardMaterial({ color: 0x171b45, emissive: 0x11163d, emissiveIntensity: 0.6, roughness: 0.7 })
+      );
+      arena.position.y = -0.12;
+      orbitScene3d.add(arena);
+      const boundary = new THREE.Mesh(
+        new THREE.TorusGeometry(7.1, 0.08, 8, 64),
+        new THREE.MeshBasicMaterial({ color: 0xa78bfa })
+      );
+      boundary.rotation.x = Math.PI / 2;
+      boundary.position.y = 0.1;
+      orbitScene3d.add(boundary);
+      orbitPlayer3d = createOrbitPlayer();
+      orbitScene3d.add(orbitPlayer3d);
+    }
+
+    function spawnOrbitObject() {
+      const isCore = Math.random() > 0.32;
+      const mesh = new THREE.Mesh(
+        isCore ? new THREE.IcosahedronGeometry(0.38, 1) : new THREE.DodecahedronGeometry(0.52, 0),
+        new THREE.MeshStandardMaterial({
+          color: isCore ? 0xfde68a : 0xf43f5e,
+          emissive: isCore ? 0xf59e0b : 0xbe123c,
+          emissiveIntensity: isCore ? 1.8 : 0.85,
+          metalness: 0.35,
+          roughness: 0.25
+        })
+      );
+      const angle = Math.random() * Math.PI * 2;
+      const radius = 1.2 + Math.random() * 5.5;
+      mesh.position.set(Math.cos(angle) * radius, 0.55, Math.sin(angle) * radius);
+      orbitScene3d.add(mesh);
+      orbitObjects.push({ mesh, isCore, velocity: 0.6 + Math.random() * 0.8, angle, radius });
+    }
+
+    function finishOrbit3dGame() {
+      if (!isPlayingOrbit3d) return;
+      isPlayingOrbit3d = false;
+      cancelAnimationFrame(orbitAnimation3d);
+      const expEarned = Math.min(90, orbitCoreCount * 3 + Math.max(0, orbitCombo - orbitCoreCount));
+      addExp(expEarned);
+      orbit3dStats.innerText = `게임 종료 · 코어 ${orbitCoreCount}개 · 획득 +${expEarned} EXP`;
+    }
+
+    function animateOrbit3d(time) {
+      if (!isPlayingOrbit3d) return;
+      orbitAnimation3d = requestAnimationFrame(animateOrbit3d);
+      const delta = Math.min(0.05, (time - orbitLastFrame) / 1000 || 0);
+      orbitLastFrame = time;
+      orbitElapsed += delta;
+      orbitSpawnTimer -= delta;
+      if (orbitSpawnTimer <= 0) {
+        spawnOrbitObject();
+        orbitSpawnTimer = Math.max(0.34, 0.75 - orbitElapsed * 0.006);
+      }
+      const moveX = (orbitKeys.right ? 1 : 0) - (orbitKeys.left ? 1 : 0);
+      const moveZ = (orbitKeys.down ? 1 : 0) - (orbitKeys.up ? 1 : 0);
+      const length = Math.hypot(moveX, moveZ) || 1;
+      orbitPlayer3d.position.x = Math.max(-6.5, Math.min(6.5, orbitPlayer3d.position.x + moveX / length * delta * 5.2));
+      orbitPlayer3d.position.z = Math.max(-6.5, Math.min(6.5, orbitPlayer3d.position.z + moveZ / length * delta * 5.2));
+      orbitPlayer3d.rotation.y += delta * 2.5;
+      orbitObjects = orbitObjects.filter(item => {
+        item.angle += item.velocity * delta * 0.12;
+        item.mesh.position.x += Math.cos(item.angle) * delta * item.velocity;
+        item.mesh.position.z += Math.sin(item.angle) * delta * item.velocity;
+        item.mesh.rotation.y += delta * (item.isCore ? 3.5 : 1.8);
+        const distance = Math.hypot(item.mesh.position.x - orbitPlayer3d.position.x, item.mesh.position.z - orbitPlayer3d.position.z);
+        if (distance < (item.isCore ? 0.9 : 0.95)) {
+          if (item.isCore) { orbitCoreCount += 1; orbitCombo += 1; }
+          else { orbitLives -= 1; orbitCombo = 0; }
+          orbitScene3d.remove(item.mesh);
+          dispose3dObject(item.mesh);
+          return false;
+        }
+        return true;
+      });
+      updateOrbit3dStats();
+      if (orbitLives <= 0 || orbitElapsed >= 45) finishOrbit3dGame();
+      orbitRenderer3d.render(orbitScene3d, orbitCamera3d);
+    }
+
+    function startOrbit3dGame() {
+      stopOrbit3dGame(false);
+      orbit3dModal.classList.add('active');
+      setupOrbit3dScene();
+      orbitCoreCount = 0;
+      orbitLives = 3;
+      orbitCombo = 0;
+      orbitElapsed = 0;
+      orbitLastFrame = 0;
+      orbitSpawnTimer = 0.2;
+      isPlayingOrbit3d = true;
+      updateOrbit3dStats();
+      orbitAnimation3d = requestAnimationFrame(animateOrbit3d);
+    }
+
+    function stopOrbit3dGame(closeModal = true) {
+      isPlayingOrbit3d = false;
+      cancelAnimationFrame(orbitAnimation3d);
+      if (orbitScene3d) {
+        clearOrbit3dObjects();
+        if (orbitPlayer3d) {
+          orbitScene3d.remove(orbitPlayer3d);
+          dispose3dObject(orbitPlayer3d);
+        }
+      }
+      if (orbitRenderer3d) orbitRenderer3d.dispose();
+      orbitScene3d = null;
+      orbitCamera3d = null;
+      orbitPlayer3d = null;
+      orbitRenderer3d = null;
+      orbitObjects = [];
+      if (closeModal) orbit3dModal.classList.remove('active');
+    }
+
+    function resizeOrbit3dRenderer() {
+      if (!orbitRenderer3d || !orbitCamera3d) return;
+      const stage = orbit3dCanvas.parentElement;
+      const width = Math.max(1, stage.clientWidth);
+      const height = Math.max(1, stage.clientHeight);
+      orbitCamera3d.aspect = width / height;
+      orbitCamera3d.updateProjectionMatrix();
+      orbitRenderer3d.setSize(width, height, false);
     }
 
     function start3dGame() {
@@ -6635,6 +6781,10 @@
       lane3d = 1;
       score3d = 0;
       lives3d = 3;
+      combo3d = 0;
+      shield3d = 0;
+      magnet3d = 0;
+      nearMisses3d = 0;
       elapsed3d = 0;
       lastFrame3d = 0;
       nextSpawn3d = 0.4;
@@ -6689,12 +6839,28 @@
       if (event.code === 'ArrowRight' || event.code === 'KeyD') { event.preventDefault(); move3dPlayer(1); }
     });
     window.addEventListener('resize', resize3dRenderer);
+    window.addEventListener('resize', resizeOrbit3dRenderer);
     game3dCanvas.addEventListener('pointerdown', event => {
       const rect = game3dCanvas.getBoundingClientRect();
       move3dPlayer(event.clientX < rect.left + rect.width / 2 ? -1 : 1);
     });
     btnCloseGame3d.addEventListener('click', stop3dGame);
     btnRestartGame3d.addEventListener('click', start3dGame);
+    btnCloseOrbit3d.addEventListener('click', stopOrbit3dGame);
+    btnRestartOrbit3d.addEventListener('click', startOrbit3dGame);
+    window.addEventListener('keydown', event => {
+      if (!orbit3dModal.classList.contains('active')) return;
+      const keyMap = { ArrowLeft: 'left', KeyA: 'left', ArrowRight: 'right', KeyD: 'right', ArrowUp: 'up', KeyW: 'up', ArrowDown: 'down', KeyS: 'down' };
+      const direction = keyMap[event.code];
+      if (!direction) return;
+      event.preventDefault();
+      orbitKeys[direction] = true;
+    });
+    window.addEventListener('keyup', event => {
+      const keyMap = { ArrowLeft: 'left', KeyA: 'left', ArrowRight: 'right', KeyD: 'right', ArrowUp: 'up', KeyW: 'up', ArrowDown: 'down', KeyS: 'down' };
+      const direction = keyMap[event.code];
+      if (direction) orbitKeys[direction] = false;
+    });
 
     canvas.addEventListener('click', () => {
       if (!isPlaying && (gameMode === 'run' || gameMode === 'collect')) startGame();
@@ -6728,6 +6894,46 @@
     }
 
     window.addEventListener('resize', positionTutorialFirstRunHint);
+
+    function compareAppVersions(leftVersion, rightVersion) {
+      const left = String(leftVersion).split('.').map(part => Number.parseInt(part, 10) || 0);
+      const right = String(rightVersion).split('.').map(part => Number.parseInt(part, 10) || 0);
+      for (let index = 0; index < Math.max(left.length, right.length); index += 1) {
+        const difference = (left[index] || 0) - (right[index] || 0);
+        if (difference !== 0) return difference;
+      }
+      return 0;
+    }
+
+    async function checkForForcedApkUpdate() {
+      if (!navigator.onLine || localStorage.getItem('today_todo_update_in_progress') === 'true') return;
+      try {
+        const response = await fetch(`${updateManifestUrl}?t=${Date.now()}`, { cache: 'no-store' });
+        if (!response.ok) return;
+        const manifest = await response.json();
+        if (!manifest || !manifest.version || !/^https:\/\//.test(manifest.apkUrl)) return;
+        if (compareAppVersions(manifest.version, appVersion) <= 0) return;
+        if (localStorage.getItem('today_todo_last_forced_update') === manifest.version) return;
+        localStorage.setItem('today_todo_update_in_progress', 'true');
+        localStorage.setItem('today_todo_last_forced_update', manifest.version);
+        const updatePlugin = window.Capacitor?.Plugins?.Update;
+        if (updatePlugin?.downloadAndInstall) {
+          await updatePlugin.downloadAndInstall({ apkUrl: manifest.apkUrl });
+          return;
+        }
+        const downloadLink = document.createElement('a');
+        downloadLink.href = manifest.apkUrl;
+        downloadLink.download = `today-todo-${manifest.version}.apk`;
+        downloadLink.rel = 'noopener';
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        downloadLink.remove();
+      } catch (error) {
+        localStorage.removeItem('today_todo_update_in_progress');
+      }
+    }
+
+    window.addEventListener('online', checkForForcedApkUpdate);
     if (appSettings.tutorialButton && localStorage.getItem('today_todo_tutorial_first_prompt_v1') !== 'seen') {
       tutorialFirstRunHint.hidden = false;
       btnOpenTutorial.classList.add('tutorial-first-run-highlight');
