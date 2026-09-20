@@ -244,11 +244,17 @@
     .theme-option { display: block; width: 100%; min-width: 0; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 7px; background: var(--surface); color: var(--text-main); font: inherit; font-size: 0.78rem; font-weight: 800; line-height: 1.2; text-align: left; cursor: pointer; }
     .theme-option:hover, .theme-option.active { border-color: var(--primary); background: color-mix(in srgb, var(--primary) 16%, var(--surface)); }
     .custom-theme-builder { display: grid; gap: 8px; margin-top: 0; padding: 10px; border: 1px dashed var(--border-color); border-radius: 8px; background: var(--surface); }
-    .custom-theme-builder input[type="text"], .custom-theme-builder input[type="file"] { width: 100%; min-width: 0; }
+    .custom-theme-builder input[type="text"], .custom-theme-builder input[type="file"] { display: block; box-sizing: border-box; width: 100%; max-width: 100%; min-width: 0; max-inline-size: 100%; }
     .custom-theme-emoji-inputs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
     .custom-theme-actions { display: flex; gap: 6px; align-items: center; }
     .custom-theme-actions button { flex: 1; }
     .custom-theme-delete { display: block; width: 100%; margin-top: 4px; padding: 3px; border: 0; background: transparent; color: #b04c4c; font-size: 0.68rem; cursor: pointer; }
+
+    @media (max-width: 600px) {
+      .theme-setting-layout { grid-template-columns: minmax(0, 1fr); }
+      .custom-theme-builder { min-width: 0; }
+      .custom-theme-builder input[type="file"] { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    }
 
     .theme-floating-effects { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 2; }
     .theme-floating-emoji { position: absolute; top: 105%; opacity: 0; font-size: clamp(1.45rem, 3.3vw, 2.45rem); filter: drop-shadow(0 4px 5px rgba(35, 50, 55, 0.22)); animation: theme-emoji-float var(--theme-duration) linear var(--theme-delay) infinite; }
@@ -646,6 +652,9 @@
     .dictionary-definition { margin-top: 6px; color: var(--text-main); font-size: 0.92rem; line-height: 1.55; }
     .dictionary-example { margin-top: 6px; color: var(--text-muted); font-size: 0.8rem; line-height: 1.5; }
     .dictionary-example::before { content: '예문: '; color: var(--primary); font-weight: 800; }
+    .dictionary-candidates { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 0; }
+    .dictionary-candidate { border: 1px solid var(--border-color); border-radius: 9px; padding: 9px 12px; background: var(--surface); color: var(--text-main); font: inherit; font-weight: 800; cursor: pointer; }
+    .dictionary-candidate:hover { border-color: var(--primary); color: var(--primary); }
     .dictionary-history { display: flex; flex-wrap: wrap; gap: 6px; padding-top: 16px; border-top: 1px solid var(--border-color); }
     .dictionary-history-label { width: 100%; color: var(--text-muted); font-size: 0.75rem; font-weight: 800; }
     .dictionary-history button { border: 1px solid var(--border-color); border-radius: 999px; padding: 5px 9px; background: var(--surface); color: var(--text-main); font: inherit; font-size: 0.75rem; cursor: pointer; }
@@ -684,6 +693,8 @@
     .setting-switch input:checked + .setting-slider::before { transform: translateX(20px); }
     .settings-footer { padding-top: 16px; color: var(--text-muted); font-size: 0.76rem; }
     .settings-reset { background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color); border-radius: 8px; padding: 8px 11px; font: inherit; font-size: 0.76rem; font-weight: 700; cursor: pointer; }
+    .inquiry-panel { width: min(100%, 460px); }
+    .inquiry-message { margin: 18px 0 4px; padding: 18px; border: 1px solid var(--border-color); border-radius: 9px; background: var(--surface); color: var(--text-main); font-size: 1rem; font-weight: 800; line-height: 1.6; text-align: center; }
 
     .tutorial-panel { position: fixed; width: min(90vw, 380px); background: rgba(255, 255, 255, 0.76); border: 1px solid rgba(255, 255, 255, 0.9); border-radius: 18px; padding: 20px; box-shadow: 0 24px 70px rgba(28, 50, 55, 0.3); transition: top 0.25s ease, left 0.25s ease; z-index: 1002; }
     .tutorial-modal-active { background: transparent !important; backdrop-filter: none; pointer-events: none; }
@@ -1783,6 +1794,19 @@
     }
 
     #game3d-canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+    .orbit-3d-stage { cursor: crosshair; }
+    .orbit-crosshair { position: absolute; top: 50%; left: 50%; width: 18px; height: 18px; transform: translate(-50%, -50%); border: 2px solid rgba(255, 255, 255, 0.9); border-radius: 50%; box-shadow: 0 0 0 1px rgba(8, 12, 34, 0.55), 0 0 14px rgba(103, 232, 249, 0.75); pointer-events: none; }
+    .orbit-crosshair::before, .orbit-crosshair::after { content: ''; position: absolute; background: #fff; box-shadow: 0 0 6px #67e8f9; }
+    .orbit-crosshair::before { top: 7px; left: -6px; width: 28px; height: 2px; }
+    .orbit-crosshair::after { top: -6px; left: 7px; width: 2px; height: 28px; }
+    .orbit-crosshair.hit { border-color: #fde68a; box-shadow: 0 0 0 2px rgba(253, 230, 138, 0.35), 0 0 20px #f59e0b; }
+    .orbit-touch-controls { position: absolute; inset: 0; pointer-events: none; }
+    .orbit-joystick { position: absolute; left: 14px; bottom: 14px; width: 76px; height: 76px; border: 1px solid rgba(255, 255, 255, 0.42); border-radius: 50%; background: rgba(20, 35, 72, 0.62); box-shadow: inset 0 0 18px rgba(103, 232, 249, 0.18); pointer-events: auto; touch-action: none; }
+    .orbit-joystick::after { content: ''; position: absolute; left: 25px; top: 25px; width: 24px; height: 24px; border: 1px solid rgba(255, 255, 255, 0.72); border-radius: 50%; background: rgba(103, 232, 249, 0.45); box-shadow: 0 0 12px rgba(103, 232, 249, 0.7); transform: translate(var(--stick-x, 0), var(--stick-y, 0)); }
+    .orbit-action-buttons { position: absolute; right: 14px; bottom: 14px; display: flex; gap: 8px; pointer-events: auto; }
+    .orbit-action-button { width: 68px; height: 48px; border: 1px solid rgba(255, 255, 255, 0.55); border-radius: 12px; background: rgba(20, 35, 72, 0.78); color: #fff; font: inherit; font-size: 0.7rem; font-weight: 850; cursor: pointer; touch-action: manipulation; }
+    .orbit-action-button.shoot { background: rgba(202, 63, 92, 0.86); }
+    .orbit-action-button.scope.active { border-color: #fde68a; background: rgba(245, 158, 11, 0.82); color: #241505; }
     .game-3d-help { color: #b8c7d9; font-size: 0.8rem; }
     .game-3d-close { background: none; border: 0; color: #cbd5e1; font-size: 1.2rem; cursor: pointer; }
     .game-3d-button { background: #d77a91; color: #fff; border: 0; border-radius: 8px; padding: 8px 12px; font-weight: 700; cursor: pointer; }
@@ -2245,18 +2269,18 @@
       header {
         box-sizing: border-box;
         width: 100%;
-        min-height: min(50dvh, 430px);
-        max-height: 50dvh;
-        overflow-y: auto;
+        min-height: 0;
+        max-height: none;
+        overflow: visible;
         align-content: start;
       }
 
       header > .timer-tools-column {
-        order: 1;
+        order: 2;
       }
 
       header > .header-right {
-        order: 2;
+        order: 1;
         grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 5px;
       }
@@ -2766,7 +2790,7 @@
       <div>
         <div class="brand-title">
           오늘 할 일
-          <span class="badge-version">v4.3</span>
+          <span class="badge-version">v1.0</span>
         </div>
         <div class="brand-desc">펫 키우기 스케줄러</div>
       </div>
@@ -3000,6 +3024,10 @@
         </div>
         <button class="settings-close" id="btn-close-settings" type="button" aria-label="설정 닫기">✕</button>
       </div>
+      <div class="setting-row">
+        <div><div class="setting-label">문의하기</div><div class="setting-description">문제가 있으면 아래 번호로 메시지를 보내주세요.</div></div>
+        <button class="settings-reset" id="btn-open-inquiry" type="button">✉️ 문의하기</button>
+      </div>
       <div class="settings-section">
         <h3 class="settings-section-title">화면 분위기</h3>
         <div class="setting-row theme-setting-row">
@@ -3084,17 +3112,30 @@
     </section>
   </div>
 
+  <div class="modal-overlay" id="inquiry-modal">
+    <section class="settings-panel inquiry-panel" role="dialog" aria-modal="true" aria-labelledby="inquiry-title">
+      <div class="settings-header">
+        <div>
+          <div class="settings-title" id="inquiry-title">문의하기</div>
+          <div class="settings-subtitle">문제가 있으면 메시지로 알려주세요.</div>
+        </div>
+        <button class="settings-close" id="btn-close-inquiry" type="button" aria-label="문의하기 닫기">✕</button>
+      </div>
+      <div class="inquiry-message">010-9561-3083으로 메시지를 보내주세요.</div>
+    </section>
+  </div>
+
   <div class="modal-overlay" id="dictionary-modal">
     <section class="dictionary-panel" role="dialog" aria-modal="true" aria-labelledby="dictionary-title">
       <div class="settings-header">
         <div>
           <div class="settings-title" id="dictionary-title">영어사전</div>
-          <div class="settings-subtitle">영어 단어를 검색해 뜻과 예문을 확인하세요.</div>
+          <div class="settings-subtitle">영어 또는 한국어를 검색해 뜻과 관련 영단어를 확인하세요.</div>
         </div>
         <button class="settings-close" id="btn-close-dictionary" type="button" aria-label="영어사전 닫기">✕</button>
       </div>
       <form class="dictionary-search" id="dictionary-search-form">
-        <input id="dictionary-input" type="search" placeholder="영어 단어를 입력하세요 (예: focus)" autocomplete="off" spellcheck="false" aria-label="영어 단어" />
+        <input id="dictionary-input" type="search" placeholder="영어 또는 한국어를 입력하세요" autocomplete="off" spellcheck="false" aria-label="영어 또는 한국어 단어" />
         <button type="submit">검색</button>
       </form>
       <div class="dictionary-status" id="dictionary-status" role="status" aria-live="polite">단어를 입력하고 검색해 보세요.</div>
@@ -3166,7 +3207,7 @@
         <button class="game-choice" data-game-mode="target"><span class="game-choice-icon">🎯</span><span class="game-choice-name">빛나는 표적</span><span class="game-choice-description">사라지기 전에 표적을 눌러 콤보를 이어가세요.</span></button>
         <button class="game-choice" data-game-mode="rhythm"><span class="game-choice-icon">🎵</span><span class="game-choice-name">펫 키우기 리듬게임</span><span class="game-choice-description">화면에 나온 행동 버튼을 30초 동안 정확히 눌러 보세요.</span></button>
         <button class="game-choice" data-game-mode="space3d"><span class="game-choice-icon">🚗</span><span class="game-choice-name">네온 보석 러너 3D</span><span class="game-choice-description">보석 콤보를 쌓고 자석과 방어막을 모으며 차량을 아슬아슬하게 피하세요.</span></button>
-        <button class="game-choice" data-game-mode="orbit3d"><span class="game-choice-icon">🪐</span><span class="game-choice-name">코어 헌터 3D</span><span class="game-choice-description">우주 경기장을 자유롭게 누비며 에너지 코어를 모으고 운석을 피하세요.</span></button>
+        <button class="game-choice" data-game-mode="orbit3d"><span class="game-choice-icon">🎯</span><span class="game-choice-name">코어 헌터 3D</span><span class="game-choice-description">1인칭 시점으로 에너지 코어를 조준하고 직접 쏘세요.</span></button>
       </div>
     </div>
   </div>
@@ -3222,14 +3263,14 @@
     <div class="game-3d-modal orbit-3d-modal">
       <div class="game-3d-header">
         <div>
-          <div class="game-3d-title">🪐 코어 헌터 3D</div>
+          <div class="game-3d-title">🎯 코어 헌터 3D · 1인칭</div>
           <div class="game-3d-stats" id="orbit-3d-stats">코어 0 · 생명 3 · 콤보 x1</div>
         </div>
         <button class="game-3d-close" id="btn-close-orbit-3d" aria-label="코어 헌터 3D 닫기">✕</button>
       </div>
-      <div class="game-3d-stage"><canvas id="orbit-3d-canvas"></canvas></div>
+      <div class="game-3d-stage orbit-3d-stage"><canvas id="orbit-3d-canvas"></canvas><div class="orbit-crosshair" id="orbit-crosshair" aria-hidden="true"></div><div class="orbit-touch-controls"><div class="orbit-joystick" id="orbit-joystick" aria-label="이동 조이스틱"></div><div class="orbit-action-buttons"><button class="orbit-action-button scope" id="orbit-scope-button" type="button">🔭 스코프</button><button class="orbit-action-button shoot" id="orbit-shoot-button" type="button">🔴 발사</button></div></div></div>
       <div class="game-3d-footer">
-        <span class="game-3d-help">WASD 또는 방향키로 이동 · 코어를 연속 수집하고 운석을 피하세요 · 45초 도전</span>
+        <span class="game-3d-help">조이스틱으로 이동 · 화면 드래그로 조준 · 발사 버튼으로 사격</span>
         <button class="game-3d-button" id="btn-restart-orbit-3d">다시 시작</button>
       </div>
     </div>
@@ -3257,7 +3298,7 @@
       setTimeout(checkForForcedApkUpdate, 2500);
     });
 
-    const appVersion = '4.3.0';
+    const appVersion = '1.0';
     const updateManifestUrl = 'https://raw.githubusercontent.com/livecono/TodayTodo/main/updates/latest.json';
 
     function formatLocalDate(date = new Date()) {
@@ -3588,6 +3629,9 @@
     const settingsModal = document.getElementById('settings-modal');
     const btnOpenSettings = document.getElementById('btn-open-settings');
     const btnCloseSettings = document.getElementById('btn-close-settings');
+    const inquiryModal = document.getElementById('inquiry-modal');
+    const btnOpenInquiry = document.getElementById('btn-open-inquiry');
+    const btnCloseInquiry = document.getElementById('btn-close-inquiry');
     const btnResetSettings = document.getElementById('btn-reset-settings');
     const cardTransparencyControl = document.getElementById('card-transparency-control');
     const cardTransparencyValue = document.getElementById('card-transparency-value');
@@ -3925,6 +3969,14 @@
       appSettings = { ...defaultSettings };
       applyCardTransparency(40);
       applySettings();
+    });
+    btnOpenInquiry.addEventListener('click', () => {
+      settingsModal.classList.remove('active');
+      inquiryModal.classList.add('active');
+    });
+    btnCloseInquiry.addEventListener('click', () => inquiryModal.classList.remove('active'));
+    inquiryModal.addEventListener('click', event => {
+      if (event.target === inquiryModal) inquiryModal.classList.remove('active');
     });
 
     const tutorialModal = document.getElementById('tutorial-modal');
@@ -4368,6 +4420,7 @@
 
     const dictionaryHistoryKey = 'today_todo_dictionary_history_v1';
     let dictionaryAudio = null;
+    let dictionarySearchController = null;
     let dictionaryHistoryItems = loadStoredJson(dictionaryHistoryKey, [], value =>
       Array.isArray(value) && value.every(word => typeof word === 'string')
     ).slice(0, 8);
@@ -4398,8 +4451,8 @@
       renderDictionaryHistory();
     }
 
-    function renderDictionaryEntry(entry) {
-      dictionaryResult.innerHTML = '';
+    function renderDictionaryEntry(entry, append = false) {
+      if (!append) dictionaryResult.innerHTML = '';
       const wordRow = document.createElement('div');
       wordRow.className = 'dictionary-word-row';
       const wordInfo = document.createElement('div');
@@ -4414,7 +4467,7 @@
         phonetic.innerText = phoneticText;
         wordInfo.appendChild(phonetic);
       }
-      const audioUrl = entry.phonetics?.find(item => item.audio)?.audio;
+      const audioUrl = entry.phonetics?.find(item => typeof item.audio === 'string' && item.audio.trim())?.audio;
       if (audioUrl) {
         const audioButton = document.createElement('button');
         audioButton.type = 'button';
@@ -4427,7 +4480,13 @@
           }
           if (dictionaryAudio) dictionaryAudio.pause();
           dictionaryAudio = new Audio(audioUrl);
+          dictionaryAudio.onended = () => { dictionaryAudio = null; };
+          dictionaryAudio.onerror = () => {
+            dictionaryAudio = null;
+            dictionaryStatus.innerText = '발음을 재생할 수 없습니다.';
+          };
           dictionaryAudio.play().catch(() => {
+            dictionaryAudio = null;
             showOfflineWarning('발음 파일을 불러오지 못했습니다. 인터넷 연결을 확인해 주세요.');
             dictionaryStatus.innerText = '발음을 재생할 수 없습니다.';
           });
@@ -4439,12 +4498,14 @@
       dictionaryResult.appendChild(wordRow);
 
       entry.meanings?.forEach(meaning => {
-        meaning.definitions?.slice(0, 3).forEach(definition => {
+        meaning.definitions?.forEach(definition => {
           const meaningElement = document.createElement('article');
           meaningElement.className = 'dictionary-meaning';
+          const partOfSpeechLabels = { noun: '명사', verb: '동사', adjective: '형용사', adverb: '부사', pronoun: '대명사', preposition: '전치사', conjunction: '접속사', interjection: '감탄사', determiner: '한정사' };
           const partOfSpeech = document.createElement('div');
           partOfSpeech.className = 'dictionary-part-of-speech';
-          partOfSpeech.innerText = meaning.partOfSpeech || 'meaning';
+          const partOfSpeechKey = String(meaning.partOfSpeech || '').toLowerCase();
+          partOfSpeech.innerText = partOfSpeechLabels[partOfSpeechKey] || meaning.partOfSpeech || '품사';
           const definitionText = document.createElement('div');
           definitionText.className = 'dictionary-definition';
           definitionText.innerText = definition.definition || '';
@@ -4460,66 +4521,148 @@
       });
     }
 
-    const offlineDictionary = {
-      focus: { word: 'focus', phonetic: '/ˈfoʊkəs/', meanings: [{ partOfSpeech: 'noun', definitions: [{ definition: '집중, 초점', example: 'Keep your focus on the task.' }] }, { partOfSpeech: 'verb', definitions: [{ definition: '집중하다', example: 'Focus on one thing at a time.' }] }] },
-      study: { word: 'study', phonetic: '/ˈstʌdi/', meanings: [{ partOfSpeech: 'verb', definitions: [{ definition: '공부하다, 연구하다', example: 'I study English every day.' }] }, { partOfSpeech: 'noun', definitions: [{ definition: '공부, 연구' }] }] },
-      schedule: { word: 'schedule', phonetic: '/ˈskedʒuːl/', meanings: [{ partOfSpeech: 'noun', definitions: [{ definition: '일정, 시간표', example: 'Check your schedule for today.' }] }] },
-      task: { word: 'task', phonetic: '/tæsk/', meanings: [{ partOfSpeech: 'noun', definitions: [{ definition: '과제, 해야 할 일', example: 'Finish the task before dinner.' }] }] },
-      plan: { word: 'plan', phonetic: '/plæn/', meanings: [{ partOfSpeech: 'noun', definitions: [{ definition: '계획' }] }, { partOfSpeech: 'verb', definitions: [{ definition: '계획하다', example: 'Plan your day in advance.' }] }] },
-      time: { word: 'time', phonetic: '/taɪm/', meanings: [{ partOfSpeech: 'noun', definitions: [{ definition: '시간' }] }] },
-      today: { word: 'today', phonetic: '/təˈdeɪ/', meanings: [{ partOfSpeech: 'adverb', definitions: [{ definition: '오늘' }] }, { partOfSpeech: 'noun', definitions: [{ definition: '오늘이라는 날' }] }] },
-      tomorrow: { word: 'tomorrow', phonetic: '/təˈmɑːroʊ/', meanings: [{ partOfSpeech: 'noun', definitions: [{ definition: '내일' }] }] },
-      learn: { word: 'learn', phonetic: '/lɜːrn/', meanings: [{ partOfSpeech: 'verb', definitions: [{ definition: '배우다, 익히다', example: 'We learn something new every day.' }] }] },
-      practice: { word: 'practice', phonetic: '/ˈpræktɪs/', meanings: [{ partOfSpeech: 'noun', definitions: [{ definition: '연습' }] }, { partOfSpeech: 'verb', definitions: [{ definition: '연습하다' }] }] },
-      break: { word: 'break', phonetic: '/breɪk/', meanings: [{ partOfSpeech: 'noun', definitions: [{ definition: '휴식' }] }, { partOfSpeech: 'verb', definitions: [{ definition: '잠시 쉬다' }] }] },
-      goal: { word: 'goal', phonetic: '/ɡoʊl/', meanings: [{ partOfSpeech: 'noun', definitions: [{ definition: '목표' }] }] },
-      start: { word: 'start', phonetic: '/stɑːrt/', meanings: [{ partOfSpeech: 'verb', definitions: [{ definition: '시작하다' }] }] },
-      finish: { word: 'finish', phonetic: '/ˈfɪnɪʃ/', meanings: [{ partOfSpeech: 'verb', definitions: [{ definition: '끝내다, 완료하다' }] }] },
-      happy: { word: 'happy', phonetic: '/ˈhæpi/', meanings: [{ partOfSpeech: 'adjective', definitions: [{ definition: '행복한, 기쁜' }] }] }
-    };
+    function stripDictionaryMarkup(value) {
+      const container = document.createElement('div');
+      container.innerHTML = String(value || '');
+      return container.textContent.trim();
+    }
+
+    function renderDictionaryCandidates(candidates) {
+      dictionaryResult.innerHTML = '';
+      const label = document.createElement('div');
+      label.className = 'dictionary-status';
+      label.innerText = '관련 영단어를 선택하면 한국어 뜻을 보여줍니다.';
+      dictionaryResult.appendChild(label);
+      const candidateGroup = document.createElement('div');
+      candidateGroup.className = 'dictionary-candidates';
+      candidates.forEach(candidate => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'dictionary-candidate';
+        button.innerText = candidate;
+        button.addEventListener('click', () => searchDictionary(candidate));
+        candidateGroup.appendChild(button);
+      });
+      dictionaryResult.appendChild(candidateGroup);
+    }
+
+    async function fetchDictionaryEntries(word, controller) {
+      const response = await fetch(`https://en.wiktionary.org/api/rest_v1/page/definition/${encodeURIComponent(word)}`, { signal: controller.signal });
+      if (!response.ok) throw new Error('dictionary request failed');
+      const data = await response.json();
+      const meanings = (data.en || []).map(meaning => ({
+        partOfSpeech: meaning.partOfSpeech,
+        definitions: (meaning.definitions || []).map(definition => ({
+          definition: stripDictionaryMarkup(definition.definition),
+          example: definition.parsedExamples?.[0]?.example
+            ? stripDictionaryMarkup(definition.parsedExamples[0].example)
+            : ''
+        })).filter(definition => definition.definition)
+      })).filter(meaning => meaning.definitions.length);
+      if (!meanings.length) throw new Error('dictionary result missing');
+      const pronunciation = (data.en || []).flatMap(meaning => meaning.pronunciations || []).find(item => item.ipa || item.text);
+      return [{ word, phonetic: pronunciation?.ipa || pronunciation?.text || '', meanings }];
+    }
+
+    async function translateKoreanWord(query, controller) {
+      const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(query)}&langpair=ko|en`, { signal: controller.signal });
+      if (!response.ok) throw new Error('translation request failed');
+      const data = await response.json();
+      const translations = [
+        data.responseData?.translatedText,
+        ...(Array.isArray(data.matches) ? data.matches.map(match => match.translation) : [])
+      ];
+      const candidates = translations
+        .flatMap(translation => String(translation || '').split(/[,;/]/))
+        .map(translation => translation.trim().toLowerCase())
+        .filter(translation => /^[a-z0-9]+$/i.test(translation));
+      const relatedResults = await Promise.allSettled(candidates.slice(0, 2).map(async candidate => {
+        const relatedResponse = await fetch(`https://api.datamuse.com/words?rel_syn=${encodeURIComponent(candidate)}&max=8`, { signal: controller.signal });
+        if (!relatedResponse.ok) return [];
+        const relatedWords = await relatedResponse.json();
+        return Array.isArray(relatedWords) ? relatedWords.map(item => item.word) : [];
+      }));
+      const relatedCandidates = relatedResults.flatMap(result => result.status === 'fulfilled' ? result.value : []);
+      return [...new Set([...candidates, ...relatedCandidates])]
+        .map(candidate => String(candidate).trim().toLowerCase())
+        .filter(candidate => /^[a-z0-9]+$/i.test(candidate))
+        .slice(0, 6);
+    }
+
+    async function translateDictionaryText(text, controller) {
+      if (!text) return '';
+      const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|ko`, { signal: controller.signal });
+      if (!response.ok) return text;
+      const data = await response.json();
+      return data.responseData?.translatedText || text;
+    }
+
+    async function translateDictionaryEntry(entry, controller) {
+      const meanings = await Promise.all(entry.meanings.map(async meaning => ({
+        ...meaning,
+        definitions: await Promise.all(meaning.definitions.map(async definition => ({
+          ...definition,
+          definition: await translateDictionaryText(definition.definition, controller),
+          example: definition.example ? await translateDictionaryText(definition.example, controller) : ''
+        })))
+      })));
+      return { ...entry, meanings };
+    }
 
     async function searchDictionary(inputWord = dictionaryInput.value) {
-      const word = inputWord.trim().toLowerCase();
-      if (!word) {
-        dictionaryStatus.innerText = '검색할 영어 단어를 입력해 주세요.';
+      const query = inputWord.trim();
+      const isKorean = /[\u3131-\uD79D]/.test(query);
+      const word = query.toLowerCase();
+      if (!query) {
+        dictionaryStatus.innerText = '검색할 영어 또는 한국어 단어를 입력해 주세요.';
         dictionaryResult.innerHTML = '';
         return;
       }
-      if (!/^[a-z]+(?:[ '-][a-z]+)*$/i.test(word)) {
-        dictionaryStatus.innerText = '영어 단어만 입력해 주세요.';
+      if (!isKorean && !/^[a-z0-9]+(?:[ '-][a-z0-9]+)*$/i.test(word)) {
+        dictionaryStatus.innerText = '영어 또는 한국어 단어를 입력해 주세요.';
         dictionaryResult.innerHTML = '';
         return;
       }
-      dictionaryInput.value = word;
-      dictionaryStatus.innerText = '단어 뜻을 찾는 중...';
+      if (dictionarySearchController) dictionarySearchController.abort();
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
+      dictionarySearchController = controller;
+      dictionaryInput.value = query;
+      dictionarySearchForm.querySelector('button[type="submit"]').disabled = true;
+      dictionaryStatus.innerText = isKorean ? '한국어 뜻에 맞는 영단어를 찾는 중...' : '단어 뜻을 찾는 중...';
       dictionaryResult.innerHTML = '';
       try {
-        const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`);
-        if (!response.ok) throw new Error('dictionary request failed');
-        const entries = await response.json();
-        if (!Array.isArray(entries) || !entries[0]) throw new Error('dictionary result missing');
-        renderDictionaryEntry(entries[0]);
-        dictionaryStatus.innerText = `${entries.length > 1 ? entries.length + '개의 결과' : '검색 결과'} · Dictionary API`;
-        rememberDictionaryWord(word);
-      } catch (error) {
-        const offlineEntry = offlineDictionary[word];
-        if (offlineEntry) {
-          if (!navigator.onLine) showOfflineWarning('인터넷이 없어 내장 사전 결과를 표시합니다.');
-          renderDictionaryEntry(offlineEntry);
-          dictionaryStatus.innerText = '오프라인 내장 사전 결과';
-          rememberDictionaryWord(word);
-          return;
+        if (isKorean) {
+          const candidates = await translateKoreanWord(query, controller);
+          if (!candidates.length) throw new Error('translation result missing');
+          renderDictionaryCandidates(candidates);
+          dictionaryStatus.innerText = `${candidates.length}개의 관련 영단어 · 인터넷 번역`;
+        } else {
+          const entries = await fetchDictionaryEntries(word, controller);
+          const translatedEntries = await Promise.all(entries.map(entry => translateDictionaryEntry(entry, controller)));
+          translatedEntries.forEach((entry, index) => renderDictionaryEntry(entry, index > 0));
+          dictionaryStatus.innerText = `${entries.length > 1 ? entries.length + '개의 결과' : '검색 결과'} · 한국어 설명`;
         }
+        rememberDictionaryWord(query);
+      } catch (error) {
+        if (controller.signal.aborted && dictionarySearchController !== controller) return;
         if (!navigator.onLine) showOfflineWarning('영어사전 온라인 검색은 인터넷 연결이 필요합니다.');
         dictionaryStatus.innerText = navigator.onLine
-          ? '단어를 찾지 못했습니다. 철자를 확인해 주세요.'
-          : '인터넷 연결이 없어 사전을 사용할 수 없습니다. 내장 사전 단어도 이용해 보세요.';
+          ? '인터넷 사전에서 결과를 찾지 못했습니다. 철자나 검색어를 확인해 주세요.'
+          : '인터넷 연결이 없어 사전을 사용할 수 없습니다.';
+      } finally {
+        clearTimeout(timeoutId);
+        if (dictionarySearchController === controller) {
+          dictionarySearchController = null;
+          dictionarySearchForm.querySelector('button[type="submit"]').disabled = false;
+        }
       }
     }
 
     renderDictionaryHistory();
     btnOpenDictionary.addEventListener('click', () => {
       dictionaryModal.classList.add('active');
+      renderDictionaryHistory();
       dictionaryInput.focus();
     });
     btnCloseDictionary.addEventListener('click', () => dictionaryModal.classList.remove('active'));
@@ -4529,6 +4672,11 @@
     dictionarySearchForm.addEventListener('submit', event => {
       event.preventDefault();
       searchDictionary();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && dictionaryModal.classList.contains('active')) {
+        dictionaryModal.classList.remove('active');
+      }
     });
 
     const timerDisplay = document.getElementById('timer-display');
@@ -6358,6 +6506,10 @@
     const orbit3dStats = document.getElementById('orbit-3d-stats');
     const btnCloseOrbit3d = document.getElementById('btn-close-orbit-3d');
     const btnRestartOrbit3d = document.getElementById('btn-restart-orbit-3d');
+    const orbitCrosshair = document.getElementById('orbit-crosshair');
+    const orbitJoystick = document.getElementById('orbit-joystick');
+    const orbitShootButton = document.getElementById('orbit-shoot-button');
+    const orbitScopeButton = document.getElementById('orbit-scope-button');
     let renderer3d;
     let scene3d;
     let camera3d;
@@ -6388,9 +6540,18 @@
     let orbitCombo = 0;
     let orbitElapsed = 0;
     let orbitLastFrame = 0;
-    let orbitSpawnTimer = 0;
     let orbitObjects = [];
-    const orbitKeys = { left: false, right: false, up: false, down: false };
+    let orbitRaycaster;
+    let orbitAim;
+    let orbitYaw = 0;
+    let orbitPitch = 0;
+    let orbitTouchPoint = null;
+    let orbitScopeActive = false;
+    let orbitJoystickPointerId = null;
+    let orbitMoveX = 0;
+    let orbitMoveZ = 0;
+    let orbitGun3d;
+    let orbitGunRecoil = 0;
     function loadThreeLibrary() {
       if (window.THREE) return Promise.resolve();
       if (threeLoadPromise) return threeLoadPromise;
@@ -6666,27 +6827,35 @@
     }
 
     function updateOrbit3dStats() {
-      orbit3dStats.innerText = `코어 ${orbitCoreCount} · 생명 ${orbitLives} · 콤보 x${Math.max(1, orbitCombo)} · ${Math.max(0, 45 - Math.floor(orbitElapsed))}초`;
+      orbit3dStats.innerText = `코어 ${orbitCoreCount}/10 · 생명 ${orbitLives} · 콤보 x${Math.max(1, orbitCombo)} · ${Math.max(0, 45 - Math.floor(orbitElapsed))}초`;
     }
 
     function createOrbitPlayer() {
-      const player = new THREE.Group();
-      const body = new THREE.Mesh(
-        new THREE.ConeGeometry(0.55, 1.35, 6),
-        new THREE.MeshStandardMaterial({ color: 0x54d6ff, emissive: 0x087ea4, emissiveIntensity: 0.8, metalness: 0.55, roughness: 0.22 })
-      );
-      body.rotation.x = -Math.PI / 2;
-      body.position.y = 0.55;
-      player.add(body);
-      const ring = new THREE.Mesh(
-        new THREE.TorusGeometry(0.7, 0.07, 8, 24),
-        new THREE.MeshBasicMaterial({ color: 0x8b5cf6, transparent: true, opacity: 0.9 })
-      );
-      ring.rotation.x = Math.PI / 2;
-      ring.position.y = 0.12;
-      player.add(ring);
-      player.position.set(0, 0, 0);
-      return player;
+      return new THREE.Group();
+    }
+
+    function createOrbitGun() {
+      const gun = new THREE.Group();
+      const darkMetal = new THREE.MeshStandardMaterial({ color: 0x182334, roughness: 0.3, metalness: 0.8 });
+      const cyanMetal = new THREE.MeshStandardMaterial({ color: 0x67e8f9, emissive: 0x0891b2, emissiveIntensity: 0.8, roughness: 0.22, metalness: 0.65 });
+      const gripMaterial = new THREE.MeshStandardMaterial({ color: 0x2d3748, roughness: 0.7, metalness: 0.15 });
+      const body = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.2, 0.72), darkMetal);
+      body.position.z = -0.2;
+      gun.add(body);
+      const barrel = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.07, 0.62, 12), cyanMetal);
+      barrel.rotation.x = Math.PI / 2;
+      barrel.position.set(0, 0.02, -0.78);
+      gun.add(barrel);
+      const grip = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.38, 0.18), gripMaterial);
+      grip.position.set(0, -0.24, -0.03);
+      grip.rotation.x = -0.18;
+      gun.add(grip);
+      const sight = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.08, 0.16), cyanMetal);
+      sight.position.set(0, 0.14, -0.32);
+      gun.add(sight);
+      gun.position.set(0.56, -0.48, -0.86);
+      gun.rotation.set(-0.08, -0.1, -0.04);
+      return gun;
     }
 
     function clearOrbit3dObjects() {
@@ -6706,34 +6875,43 @@
       orbitRenderer3d.setSize(width, height, false);
       orbitScene3d = new THREE.Scene();
       orbitScene3d.background = new THREE.Color(0x090b22);
-      orbitCamera3d = new THREE.PerspectiveCamera(48, width / height, 0.1, 100);
-      orbitCamera3d.position.set(0, 14, 8);
-      orbitCamera3d.lookAt(0, 0, 0);
+      orbitCamera3d = new THREE.PerspectiveCamera(70, width / height, 0.1, 100);
+      orbitCamera3d.position.set(0, 1.55, 5.5);
+      orbitYaw = 0;
+      orbitPitch = 0;
+      orbitCamera3d.rotation.order = 'YXZ';
+      orbitCamera3d.rotation.set(orbitPitch, orbitYaw, 0);
+      orbitMoveX = 0;
+      orbitMoveZ = 0;
+      orbitGunRecoil = 0;
+      orbitGun3d = createOrbitGun();
+      orbitScene3d.add(orbitGun3d);
+      orbitRaycaster = new THREE.Raycaster();
+      orbitAim = new THREE.Vector2(0, 0);
       orbitScene3d.add(new THREE.HemisphereLight(0xb8c7ff, 0x10102c, 2.2));
       const light = new THREE.PointLight(0x67e8f9, 3.2, 24);
       light.position.set(0, 5, 0);
       orbitScene3d.add(light);
       const arena = new THREE.Mesh(
-        new THREE.CylinderGeometry(7.2, 7.2, 0.22, 64),
+        new THREE.PlaneGeometry(18, 60),
         new THREE.MeshStandardMaterial({ color: 0x171b45, emissive: 0x11163d, emissiveIntensity: 0.6, roughness: 0.7 })
       );
-      arena.position.y = -0.12;
+      arena.rotation.x = -Math.PI / 2;
+      arena.position.set(0, 0, -12);
       orbitScene3d.add(arena);
       const boundary = new THREE.Mesh(
-        new THREE.TorusGeometry(7.1, 0.08, 8, 64),
-        new THREE.MeshBasicMaterial({ color: 0xa78bfa })
+        new THREE.BoxGeometry(18, 0.04, 60),
+        new THREE.MeshBasicMaterial({ color: 0x334b82, wireframe: true, transparent: true, opacity: 0.55 })
       );
-      boundary.rotation.x = Math.PI / 2;
-      boundary.position.y = 0.1;
+      boundary.position.set(0, 0.03, -12);
       orbitScene3d.add(boundary);
-      orbitPlayer3d = createOrbitPlayer();
-      orbitScene3d.add(orbitPlayer3d);
+      orbitPlayer3d = null;
     }
 
     function spawnOrbitObject() {
       const isCore = Math.random() > 0.32;
       const mesh = new THREE.Mesh(
-        isCore ? new THREE.IcosahedronGeometry(0.38, 1) : new THREE.DodecahedronGeometry(0.52, 0),
+        isCore ? new THREE.IcosahedronGeometry(0.48, 1) : new THREE.DodecahedronGeometry(0.6, 0),
         new THREE.MeshStandardMaterial({
           color: isCore ? 0xfde68a : 0xf43f5e,
           emissive: isCore ? 0xf59e0b : 0xbe123c,
@@ -6742,11 +6920,38 @@
           roughness: 0.25
         })
       );
-      const angle = Math.random() * Math.PI * 2;
-      const radius = 1.2 + Math.random() * 5.5;
-      mesh.position.set(Math.cos(angle) * radius, 0.55, Math.sin(angle) * radius);
+      mesh.position.set((Math.random() - 0.5) * 12, 1.1 + Math.random() * 1.8, -2.5 - Math.random() * 12);
       orbitScene3d.add(mesh);
-      orbitObjects.push({ mesh, isCore, velocity: 0.6 + Math.random() * 0.8, angle, radius });
+      orbitObjects.push({ mesh, isCore, velocity: 0.7 + Math.random() * 0.8, phase: Math.random() * Math.PI * 2 });
+    }
+
+    function orbitShoot() {
+      if (!isPlayingOrbit3d || !orbitRaycaster || !orbitCamera3d) return;
+      orbitGunRecoil = 0.08;
+      orbitRaycaster.setFromCamera(orbitAim, orbitCamera3d);
+      const hit = orbitRaycaster.intersectObjects(orbitObjects.map(item => item.mesh), false)[0];
+      if (!hit) {
+        orbitCombo = 0;
+        return;
+      }
+      const target = orbitObjects.find(item => item.mesh === hit.object);
+      if (!target) return;
+      if (target.isCore) {
+        orbitCoreCount += 1;
+        orbitCombo += 1;
+        orbitScene3d.remove(target.mesh);
+        dispose3dObject(target.mesh);
+        orbitObjects = orbitObjects.filter(item => item !== target);
+        orbitCrosshair.classList.add('hit');
+        setTimeout(() => orbitCrosshair.classList.remove('hit'), 110);
+      } else {
+        orbitLives -= 1;
+        orbitCombo = 0;
+        orbitScene3d.remove(target.mesh);
+        dispose3dObject(target.mesh);
+        orbitObjects = orbitObjects.filter(item => item !== target);
+      }
+      updateOrbit3dStats();
     }
 
     function finishOrbit3dGame() {
@@ -6764,26 +6969,26 @@
       const delta = Math.min(0.05, (time - orbitLastFrame) / 1000 || 0);
       orbitLastFrame = time;
       orbitElapsed += delta;
-      orbitSpawnTimer -= delta;
-      if (orbitSpawnTimer <= 0) {
-        spawnOrbitObject();
-        orbitSpawnTimer = Math.max(0.34, 0.75 - orbitElapsed * 0.006);
+      while (orbitObjects.length < 10) spawnOrbitObject();
+      const moveSpeed = 4.8;
+      orbitCamera3d.position.x = Math.max(-7, Math.min(7, orbitCamera3d.position.x + orbitMoveX * moveSpeed * delta));
+      orbitCamera3d.position.z = Math.max(-1, Math.min(6, orbitCamera3d.position.z + orbitMoveZ * moveSpeed * delta));
+      if (orbitGun3d) {
+        orbitGunRecoil = Math.max(0, orbitGunRecoil - delta * 0.45);
+        const gunOffset = new THREE.Vector3(0.56, -0.48, -0.86 + orbitGunRecoil).applyQuaternion(orbitCamera3d.quaternion);
+        orbitGun3d.position.copy(orbitCamera3d.position).add(gunOffset);
+        orbitGun3d.rotation.copy(orbitCamera3d.rotation);
+        orbitGun3d.rotateX(-0.08);
+        orbitGun3d.rotateY(-0.1);
+        orbitGun3d.rotateZ(-0.04);
       }
-      const moveX = (orbitKeys.right ? 1 : 0) - (orbitKeys.left ? 1 : 0);
-      const moveZ = (orbitKeys.down ? 1 : 0) - (orbitKeys.up ? 1 : 0);
-      const length = Math.hypot(moveX, moveZ) || 1;
-      orbitPlayer3d.position.x = Math.max(-6.5, Math.min(6.5, orbitPlayer3d.position.x + moveX / length * delta * 5.2));
-      orbitPlayer3d.position.z = Math.max(-6.5, Math.min(6.5, orbitPlayer3d.position.z + moveZ / length * delta * 5.2));
-      orbitPlayer3d.rotation.y += delta * 2.5;
+      orbitCamera3d.rotation.set(orbitPitch, orbitYaw, 0);
       orbitObjects = orbitObjects.filter(item => {
-        item.angle += item.velocity * delta * 0.12;
-        item.mesh.position.x += Math.cos(item.angle) * delta * item.velocity;
-        item.mesh.position.z += Math.sin(item.angle) * delta * item.velocity;
+        item.phase += delta * item.velocity;
+        item.mesh.position.x += Math.sin(item.phase) * delta * 0.35;
         item.mesh.rotation.y += delta * (item.isCore ? 3.5 : 1.8);
-        const distance = Math.hypot(item.mesh.position.x - orbitPlayer3d.position.x, item.mesh.position.z - orbitPlayer3d.position.z);
-        if (distance < (item.isCore ? 0.9 : 0.95)) {
-          if (item.isCore) { orbitCoreCount += 1; orbitCombo += 1; }
-          else { orbitLives -= 1; orbitCombo = 0; }
+        item.mesh.rotation.x += delta * 1.2;
+        if (item.mesh.position.z > orbitCamera3d.position.z + 4) {
           orbitScene3d.remove(item.mesh);
           dispose3dObject(item.mesh);
           return false;
@@ -6791,7 +6996,7 @@
         return true;
       });
       updateOrbit3dStats();
-      if (orbitLives <= 0 || orbitElapsed >= 45) finishOrbit3dGame();
+      if (orbitLives <= 0 || orbitCoreCount >= 10 || orbitElapsed >= 45) finishOrbit3dGame();
       orbitRenderer3d.render(orbitScene3d, orbitCamera3d);
     }
 
@@ -6804,7 +7009,11 @@
       orbitCombo = 0;
       orbitElapsed = 0;
       orbitLastFrame = 0;
-      orbitSpawnTimer = 0.2;
+      orbitObjects = [];
+      orbitScopeActive = false;
+      orbitScopeButton.classList.remove('active');
+      orbitScopeButton.textContent = '🔭 스코프';
+      while (orbitObjects.length < 10) spawnOrbitObject();
       isPlayingOrbit3d = true;
       updateOrbit3dStats();
       orbitAnimation3d = requestAnimationFrame(animateOrbit3d);
@@ -6826,6 +7035,17 @@
       orbitPlayer3d = null;
       orbitRenderer3d = null;
       orbitObjects = [];
+      orbitRaycaster = null;
+      orbitAim = null;
+      orbitTouchPoint = null;
+      orbitJoystickPointerId = null;
+      orbitMoveX = 0;
+      orbitMoveZ = 0;
+      if (orbitGun3d && orbitScene3d) {
+        orbitScene3d.remove(orbitGun3d);
+        dispose3dObject(orbitGun3d);
+      }
+      orbitGun3d = null;
       if (closeModal) orbit3dModal.classList.remove('active');
     }
 
@@ -6837,6 +7057,40 @@
       orbitCamera3d.aspect = width / height;
       orbitCamera3d.updateProjectionMatrix();
       orbitRenderer3d.setSize(width, height, false);
+    }
+
+    function toggleOrbitScope() {
+      if (!orbitCamera3d) return;
+      orbitScopeActive = !orbitScopeActive;
+      orbitCamera3d.fov = orbitScopeActive ? 34 : 70;
+      orbitCamera3d.updateProjectionMatrix();
+      orbitScopeButton.classList.toggle('active', orbitScopeActive);
+      orbitScopeButton.textContent = orbitScopeActive ? '🔭 스코프 ON' : '🔭 스코프';
+    }
+
+    function updateOrbitJoystick(event) {
+      const rect = orbitJoystick.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const radius = rect.width * 0.36;
+      const deltaX = event.clientX - centerX;
+      const deltaY = event.clientY - centerY;
+      const distance = Math.min(radius, Math.hypot(deltaX, deltaY));
+      const angle = Math.atan2(deltaY, deltaX);
+      const stickX = Math.cos(angle) * distance;
+      const stickY = Math.sin(angle) * distance;
+      orbitJoystick.style.setProperty('--stick-x', `${stickX}px`);
+      orbitJoystick.style.setProperty('--stick-y', `${stickY}px`);
+      orbitMoveX = stickX / radius;
+      orbitMoveZ = stickY / radius;
+    }
+
+    function resetOrbitJoystick() {
+      orbitJoystickPointerId = null;
+      orbitMoveX = 0;
+      orbitMoveZ = 0;
+      orbitJoystick.style.setProperty('--stick-x', '0px');
+      orbitJoystick.style.setProperty('--stick-y', '0px');
     }
 
     function start3dGame() {
@@ -6905,34 +7159,36 @@
       renderer3d.setSize(width, height, false);
     }
 
-    window.addEventListener('keydown', event => {
-      if (!game3dModal.classList.contains('active')) return;
-      if (event.code === 'ArrowLeft' || event.code === 'KeyA') { event.preventDefault(); move3dPlayer(-1); }
-      if (event.code === 'ArrowRight' || event.code === 'KeyD') { event.preventDefault(); move3dPlayer(1); }
-    });
-    window.addEventListener('resize', resize3dRenderer);
-    window.addEventListener('resize', resizeOrbit3dRenderer);
-    game3dCanvas.addEventListener('pointerdown', event => {
-      const rect = game3dCanvas.getBoundingClientRect();
-      move3dPlayer(event.clientX < rect.left + rect.width / 2 ? -1 : 1);
-    });
-    btnCloseGame3d.addEventListener('click', stop3dGame);
-    btnRestartGame3d.addEventListener('click', start3dGame);
-    btnCloseOrbit3d.addEventListener('click', stopOrbit3dGame);
-    btnRestartOrbit3d.addEventListener('click', startOrbit3dGame);
-    window.addEventListener('keydown', event => {
+    btnCloseGame3d.addEventListener('click', () => stop3dGame());
+    btnCloseOrbit3d.addEventListener('click', () => stopOrbit3dGame());
+    orbit3dCanvas.addEventListener('pointerdown', event => {
       if (!orbit3dModal.classList.contains('active')) return;
-      const keyMap = { ArrowLeft: 'left', KeyA: 'left', ArrowRight: 'right', KeyD: 'right', ArrowUp: 'up', KeyW: 'up', ArrowDown: 'down', KeyS: 'down' };
-      const direction = keyMap[event.code];
-      if (!direction) return;
+      orbitTouchPoint = { x: event.clientX, y: event.clientY, time: performance.now() };
+      if (event.pointerType === 'mouse' && orbit3dCanvas.requestPointerLock) orbit3dCanvas.requestPointerLock();
+    });
+    orbit3dCanvas.addEventListener('pointermove', event => {
+      if (!orbit3dModal.classList.contains('active')) return;
+      const sensitivity = event.pointerType === 'mouse' && document.pointerLockElement === orbit3dCanvas ? 0.0024 : 0.006;
+      const deltaX = event.movementX || (orbitTouchPoint ? event.clientX - orbitTouchPoint.x : 0);
+      const deltaY = event.movementY || (orbitTouchPoint ? event.clientY - orbitTouchPoint.y : 0);
+      orbitYaw -= deltaX * sensitivity;
+      orbitPitch = Math.max(-0.9, Math.min(0.9, orbitPitch - deltaY * sensitivity));
+      orbitTouchPoint = { x: event.clientX, y: event.clientY, time: orbitTouchPoint?.time || performance.now() };
+    });
+    orbit3dCanvas.addEventListener('pointerup', () => { orbitTouchPoint = null; });
+    orbitShootButton.addEventListener('pointerdown', event => { event.preventDefault(); orbitShoot(); });
+    orbitScopeButton.addEventListener('click', toggleOrbitScope);
+    orbitJoystick.addEventListener('pointerdown', event => {
       event.preventDefault();
-      orbitKeys[direction] = true;
+      orbitJoystickPointerId = event.pointerId;
+      orbitJoystick.setPointerCapture(event.pointerId);
+      updateOrbitJoystick(event);
     });
-    window.addEventListener('keyup', event => {
-      const keyMap = { ArrowLeft: 'left', KeyA: 'left', ArrowRight: 'right', KeyD: 'right', ArrowUp: 'up', KeyW: 'up', ArrowDown: 'down', KeyS: 'down' };
-      const direction = keyMap[event.code];
-      if (direction) orbitKeys[direction] = false;
+    orbitJoystick.addEventListener('pointermove', event => {
+      if (event.pointerId === orbitJoystickPointerId) updateOrbitJoystick(event);
     });
+    orbitJoystick.addEventListener('pointerup', resetOrbitJoystick);
+    orbitJoystick.addEventListener('pointercancel', resetOrbitJoystick);
 
     canvas.addEventListener('click', () => {
       if (!isPlaying && (gameMode === 'run' || gameMode === 'collect')) startGame();
