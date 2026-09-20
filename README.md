@@ -7,8 +7,8 @@
 
 ```json
 {
-	"version": "2.0",
-	"apkUrl": "https://example.com/releases/today-todo-2.0.apk",
+	"version": "1.0",
+	"apkUrl": "https://example.com/releases/today-todo-1.0.apk",
 	"notes": "업데이트 내용"
 }
 ```
@@ -18,10 +18,10 @@
 빌드된 APK를 `updates` 폴더에 복사하고 manifest를 갱신하려면 다음처럼 실행합니다.
 
 ```powershell
-npm run publish:update -- -Version 2.0 -ApkUrl https://example.com/releases/today-todo-2.0.apk -Notes "업데이트 내용"
+npm run publish:update -- -Version 1.0 -ApkUrl https://example.com/releases/today-todo-1.0.apk -Notes "업데이트 내용"
 ```
 
-이 명령은 `updates/today-todo-2.0.apk`와 `updates/latest.json`을 생성합니다. `updates` 폴더 전체를 HTTPS 정적 호스팅에 업로드하고, `www/index.html`의 `UPDATE_MANIFEST_URL`을 그 `latest.json` 주소로 설정합니다.
+이 명령은 `updates/today-todo-1.0.apk`와 `updates/latest.json`을 생성합니다. `updates` 폴더 전체를 HTTPS 정적 호스팅에 업로드하고, `www/index.html`의 `UPDATE_MANIFEST_URL`을 그 `latest.json` 주소로 설정합니다.
 
 ## 오프라인 및 모바일 사용
 
