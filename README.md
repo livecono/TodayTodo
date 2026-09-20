@@ -22,3 +22,9 @@ npm run publish:update -- -Version 4.3.0 -ApkUrl https://example.com/releases/to
 ```
 
 이 명령은 `updates/today-todo-4.3.0.apk`와 `updates/latest.json`을 생성합니다. `updates` 폴더 전체를 HTTPS 정적 호스팅에 업로드하고, `www/index.html`의 `UPDATE_MANIFEST_URL`을 그 `latest.json` 주소로 설정합니다.
+
+## 오프라인 및 모바일 사용
+
+`www/service-worker.js`가 앱 셸과 기본 이미지·소리·Three.js 파일을 캐시하므로 첫 온라인 실행 후 일정, 메모, 펫 데이터와 기본 기능을 오프라인에서도 사용할 수 있습니다. 영어사전 온라인 검색과 날씨 자동 조회처럼 외부 API가 필요한 기능은 연결이 있을 때만 동작하며, 내장 사전 단어는 오프라인에서도 검색할 수 있습니다.
+
+모바일에서는 세로 스크롤과 안전 영역 여백을 사용하고, 모달 내용이 짧은 화면에서 잘리지 않도록 동작합니다. 웹에서 설치 가능한 형태로 제공할 때는 `manifest.webmanifest`와 `service-worker.js`를 `www`와 함께 HTTPS로 배포해야 합니다.

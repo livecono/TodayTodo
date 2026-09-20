@@ -4,6 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#477579">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="images/app-logo.svg" type="image/svg+xml">
   <title>오늘 할 일 - 스마트 스케줄러 & 펫 키우기</title>
   <style>
     :root {
@@ -229,11 +232,18 @@
       z-index: 2;
     }
 
-    .theme-setting-row { display: block; }
-    .theme-options { display: grid; grid-template-columns: repeat(auto-fill, minmax(82px, 1fr)); gap: 5px; margin-top: 8px; }
-    .theme-option { min-width: 0; padding: 6px 4px; border: 1px solid var(--border-color); border-radius: 7px; background: var(--surface); color: var(--text-main); font: inherit; font-size: 0.69rem; font-weight: 800; line-height: 1.2; cursor: pointer; }
+    .setting-row.theme-setting-row { display: block; }
+    .theme-setting-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; margin-top: 10px; align-items: start; }
+    .theme-selection { min-width: 0; }
+    .theme-picker-toggle { display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; padding: 8px 10px; border: 1px solid var(--border-color); border-radius: 7px; background: var(--surface); color: var(--text-main); font: inherit; font-size: 0.78rem; font-weight: 800; text-align: left; cursor: pointer; }
+    .theme-picker-toggle::after { content: '▾'; color: var(--text-muted); }
+    .theme-picker-toggle[aria-expanded='true']::after { content: '▴'; }
+    .theme-options { display: none; grid-template-columns: minmax(0, 1fr); gap: 5px; max-height: 150px; margin-top: 5px; overflow-y: auto; padding-right: 4px; scrollbar-width: thin; }
+    .theme-options.open { display: grid; }
+    .theme-option-cell { min-width: 0; }
+    .theme-option { display: block; width: 100%; min-width: 0; padding: 6px 8px; border: 1px solid var(--border-color); border-radius: 7px; background: var(--surface); color: var(--text-main); font: inherit; font-size: 0.78rem; font-weight: 800; line-height: 1.2; text-align: left; cursor: pointer; }
     .theme-option:hover, .theme-option.active { border-color: var(--primary); background: color-mix(in srgb, var(--primary) 16%, var(--surface)); }
-    .custom-theme-builder { display: grid; gap: 8px; margin-top: 10px; padding: 10px; border: 1px dashed var(--border-color); border-radius: 8px; background: var(--surface); }
+    .custom-theme-builder { display: grid; gap: 8px; margin-top: 0; padding: 10px; border: 1px dashed var(--border-color); border-radius: 8px; background: var(--surface); }
     .custom-theme-builder input[type="text"], .custom-theme-builder input[type="file"] { width: 100%; min-width: 0; }
     .custom-theme-emoji-inputs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
     .custom-theme-actions { display: flex; gap: 6px; align-items: center; }
@@ -1049,6 +1059,9 @@
     .pet-avatar {
       position: relative;
       font-size: 2.3rem;
+      touch-action: none;
+      -webkit-user-select: none;
+      user-select: none;
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
       transition: transform 0.2s ease;
       animation: pet-bob 2.8s ease-in-out infinite;
@@ -2668,7 +2681,7 @@
       body {
         min-height: 100dvh;
         height: auto;
-        overflow-y: auto;
+        overflow-y: hidden;
         padding: 8px 6px 18px;
       }
 
@@ -2686,6 +2699,39 @@
       .dictionary-panel, .settings-panel, .sound-panel, .memo-modal { padding: 16px; border-radius: 12px; }
       .dictionary-search { gap: 6px; }
       .dictionary-search button { padding: 0 12px; }
+    }
+
+    /* Keep the app usable when a mobile keyboard or a short viewport reduces available space. */
+    html,
+    body,
+    .app-container {
+      overflow-x: hidden;
+      overflow-y: auto;
+      overscroll-behavior-y: contain;
+      scrollbar-width: none;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100%;
+      height: auto;
+      touch-action: pan-y;
+    }
+
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar,
+    .app-container::-webkit-scrollbar {
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left)); }
+      .app-container { gap: 14px; }
+      .modal-overlay { padding: 12px; overflow-y: auto; touch-action: pan-y; }
+      .modal-overlay > * { max-height: calc(100dvh - 24px); overflow-y: auto; }
+      .todo-list, .memo-list { max-height: none; overflow: visible; }
+      .timeline { overflow: visible; }
     }
   </style>
 </head>
@@ -2958,18 +3004,23 @@
         <h3 class="settings-section-title">화면 분위기</h3>
         <div class="setting-row theme-setting-row">
           <div><div class="setting-label">앱 테마</div><div class="setting-description">기본 테마와 해금한 펫의 테마 중에서 선택합니다.</div></div>
-          <div class="theme-options" id="theme-options"></div>
-          <div class="custom-theme-builder">
-            <div class="setting-label">나만의 테마 만들기</div>
-            <input id="custom-theme-name" type="text" placeholder="테마 이름" aria-label="새 테마 이름" />
-            <input id="custom-theme-photo" type="file" accept="image/*" aria-label="테마 사진 첨부" />
-            <div class="custom-theme-emoji-inputs" aria-label="떠다니는 이모지 직접 입력">
-              <input class="custom-theme-emoji-input" type="text" placeholder="이모지 1" aria-label="떠다니는 이모지 1" />
-              <input class="custom-theme-emoji-input" type="text" placeholder="이모지 2" aria-label="떠다니는 이모지 2" />
-              <input class="custom-theme-emoji-input" type="text" placeholder="이모지 3" aria-label="떠다니는 이모지 3" />
+          <div class="theme-setting-layout">
+            <div class="theme-selection">
+              <button class="theme-picker-toggle" id="theme-picker-toggle" type="button" aria-expanded="false">테마 선택</button>
+              <div class="theme-options" id="theme-options"></div>
             </div>
-            <div class="custom-theme-actions"><button class="settings-reset" id="btn-create-custom-theme" type="button">테마 저장</button></div>
-            <div id="custom-theme-status" class="setting-description" role="status" aria-live="polite"></div>
+            <div class="custom-theme-builder">
+              <div class="setting-label">나만의 테마 만들기</div>
+              <input id="custom-theme-name" type="text" placeholder="테마 이름" aria-label="새 테마 이름" />
+              <input id="custom-theme-photo" type="file" accept="image/*" aria-label="테마 사진 첨부" />
+              <div class="custom-theme-emoji-inputs" aria-label="떠다니는 이모지 직접 입력">
+                <input class="custom-theme-emoji-input" type="text" placeholder="이모지 1" aria-label="떠다니는 이모지 1" />
+                <input class="custom-theme-emoji-input" type="text" placeholder="이모지 2" aria-label="떠다니는 이모지 2" />
+                <input class="custom-theme-emoji-input" type="text" placeholder="이모지 3" aria-label="떠다니는 이모지 3" />
+              </div>
+              <div class="custom-theme-actions"><button class="settings-reset" id="btn-create-custom-theme" type="button">테마 저장</button></div>
+              <div id="custom-theme-status" class="setting-description" role="status" aria-live="polite"></div>
+            </div>
           </div>
         </div>
         <div class="setting-row setting-range-row">
@@ -3059,7 +3110,6 @@
           <div class="settings-title" id="tutorial-title">오늘의 플래너 튜토리얼</div>
           <div class="settings-subtitle">화면의 강조된 요소를 따라가며 기능을 익혀보세요.</div>
         </div>
-        <button class="settings-close" id="btn-close-tutorial" type="button" aria-label="튜토리얼 닫기">✕</button>
       </div>
       <div id="tutorial-step-count" class="tutorial-step-count"></div>
       <div id="tutorial-step-title" class="tutorial-step-title"></div>
@@ -3186,6 +3236,12 @@
   </div>
 
   <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('service-worker.js').catch(() => {});
+      });
+    }
+
     // --------------------------------------------------
     // 🌟 2초 스플래시 시작 화면 제어 로직
     // --------------------------------------------------
@@ -3537,6 +3593,7 @@
     const cardTransparencyValue = document.getElementById('card-transparency-value');
     const settingInputs = document.querySelectorAll('[data-setting]');
     const themeOptions = document.getElementById('theme-options');
+    const themePickerToggle = document.getElementById('theme-picker-toggle');
     const themeFloatingEffects = document.getElementById('theme-floating-effects');
     const customThemeName = document.getElementById('custom-theme-name');
     const customThemePhoto = document.getElementById('custom-theme-photo');
@@ -3696,6 +3753,8 @@
     function renderThemeOptions() {
       const availableThemes = getAllThemeDefinitions().filter(theme => theme.custom || isThemeUnlocked(theme));
       if (!availableThemes.some(theme => theme.key === selectedTheme)) selectedTheme = 'none';
+      const selectedDefinition = availableThemes.find(theme => theme.key === selectedTheme) || availableThemes[0];
+      themePickerToggle.innerText = selectedDefinition ? `${selectedDefinition.emoji} ${selectedDefinition.label}` : '테마 선택';
       themeOptions.innerHTML = '';
       availableThemes.forEach(theme => {
         const button = document.createElement('button');
@@ -3706,10 +3765,13 @@
         button.addEventListener('click', () => {
           selectedTheme = theme.key;
           localStorage.setItem('today_todo_selected_theme', selectedTheme);
+          themeOptions.classList.remove('open');
+          themePickerToggle.setAttribute('aria-expanded', 'false');
           renderThemeOptions();
           applySelectedTheme();
         });
         const wrapper = document.createElement('div');
+        wrapper.className = 'theme-option-cell';
         wrapper.appendChild(button);
         if (theme.custom) {
           const deleteButton = document.createElement('button');
@@ -3724,6 +3786,11 @@
       });
       localStorage.setItem('today_todo_selected_theme', selectedTheme);
     }
+
+    themePickerToggle.addEventListener('click', () => {
+      const isOpen = themeOptions.classList.toggle('open');
+      themePickerToggle.setAttribute('aria-expanded', String(isOpen));
+    });
 
     function applySelectedTheme() {
       weatherPhotoRequestId += 1;
@@ -3863,7 +3930,6 @@
     const tutorialModal = document.getElementById('tutorial-modal');
     const tutorialPanel = tutorialModal.querySelector('.tutorial-panel');
     const btnOpenTutorial = document.getElementById('btn-open-tutorial');
-    const btnCloseTutorial = document.getElementById('btn-close-tutorial');
     const btnTutorialPrev = document.getElementById('btn-tutorial-prev');
     const btnTutorialNext = document.getElementById('btn-tutorial-next');
     const tutorialStepCount = document.getElementById('tutorial-step-count');
@@ -3922,7 +3988,6 @@
       tutorialTarget = step.target ? document.querySelector(step.target) : null;
       if (tutorialTarget) {
         tutorialTarget.classList.add('tutorial-guide-target');
-        tutorialTarget.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
       }
       tutorialStepCount.innerText = `${tutorialStepIndex + 1} / ${tutorialSteps.length}`;
       tutorialStepTitle.innerText = step.title;
@@ -3981,7 +4046,6 @@
       localStorage.setItem('today_todo_tutorial_first_prompt_v1', 'seen');
       showTutorialLaunchEffect();
     });
-    btnCloseTutorial.addEventListener('click', closeTutorial);
     tutorialModal.addEventListener('click', event => {
       if (event.target === tutorialModal) closeTutorial();
     });
@@ -5432,21 +5496,30 @@
 
     petEmoji.addEventListener('pointerdown', event => {
       if (isUnhatchedPet()) return;
+      event.preventDefault();
       petPointerStart = { x: event.clientX, y: event.clientY };
       petHoldReady = false;
-      petEmoji.setPointerCapture(event.pointerId);
+      try {
+        petEmoji.setPointerCapture(event.pointerId);
+      } catch (error) {
+        petHoldReady = false;
+      }
       petHoldTimer = setTimeout(() => {
         petHoldReady = true;
-      }, 500);
+      }, 180);
     });
     petEmoji.addEventListener('pointermove', event => {
       if (isUnhatchedPet()) return;
-      if (!petHoldReady || !petPointerStart) return;
+      if (!petPointerStart) return;
+      event.preventDefault();
       const movedDistance = Math.hypot(
         event.clientX - petPointerStart.x,
         event.clientY - petPointerStart.y
       );
-      if (movedDistance < 3 || isPetting) return;
+      if (movedDistance < 3 || isPetting || (!petHoldReady && event.pointerType === 'mouse')) return;
+      clearTimeout(petHoldTimer);
+      petHoldTimer = null;
+      petHoldReady = true;
       isPetting = true;
       petEmoji.classList.remove('pet-bounce');
       petEmoji.classList.add('pet-petting');
@@ -6318,7 +6391,6 @@
     let orbitSpawnTimer = 0;
     let orbitObjects = [];
     const orbitKeys = { left: false, right: false, up: false, down: false };
-
     function loadThreeLibrary() {
       if (window.THREE) return Promise.resolve();
       if (threeLoadPromise) return threeLoadPromise;

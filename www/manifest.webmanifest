@@ -1,0 +1,17 @@
+{
+  "name": "오늘 할 일",
+  "short_name": "오늘 할 일",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#e9eef0",
+  "theme_color": "#477579",
+  "lang": "ko",
+  "icons": [
+    {
+      "src": "images/app-logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

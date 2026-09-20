@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 190" role="img" aria-labelledby="title desc">
-  <title id="title">드래곤 알</title>
-  <desc id="desc">초록 비늘과 금빛 뿔이 있는 드래곤 알</desc>
+  <title id="title">Dragon egg</title>
+  <desc id="desc">A green dragon egg with golden horns.</desc>
   <defs>
     <linearGradient id="shell" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#b9edcf"/>
