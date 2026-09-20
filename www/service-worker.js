@@ -1,4 +1,4 @@
-const CACHE_NAME = 'today-todo-shell-v4.3.1';
+const CACHE_NAME = 'today-todo-shell-v2.0';
 const SHELL_ASSETS = [
   './',
   './index.html',
